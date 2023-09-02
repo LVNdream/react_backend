@@ -1,0 +1,303 @@
+.article-picture-product {
+    text-align: right;
+}
+
+.picture-product {
+    width: 500px;
+    height: 530px;
+    // float: right;
+    margin-right: 60px;
+}
+
+// css cho cái cam kết
+.note-size {
+    margin-top: 16px;
+    font-size: 18px;
+    color: rgb(206, 141, 49);
+    font-style: italic;
+}
+
+.note-commit {
+    font-size: 18px;
+    color: rgb(206, 141, 49);
+    font-style: italic;
+}
+
+// 
+.tilte-main {
+    width: 100%;
+    height: 40px;
+    background-color: rgb(238, 237, 237);
+    margin-bottom: 30px;
+}
+
+.title-content {
+    padding: 7px;
+    font-size: 17px;
+    margin: auto;
+    margin-left: 100px;
+    font-weight: 400;
+}
+
+.product-name {
+    margin-top: 20px;
+    font-size: 23px;
+    font-family: cursive;
+    color: rgb(160, 129, 108);
+}
+
+.product-code {
+    font-size: 18;
+    font-weight: 500;
+}
+
+.article-price {
+    gap: 35px;
+    margin-top: 30px;
+}
+
+.product-discount {
+    height: 35px;
+    width: 55px;
+    background-color: rgb(231, 231, 231);
+    border-radius: 5px;
+}
+
+.discount-content {
+    text-align: center;
+    padding: auto;
+    font-size: 18px;
+    color: rgb(222, 66, 66);
+    margin: 0;
+    padding-top: 5px;
+}
+
+.product-price {
+    height: 35px;
+    width: 150px;
+    background-color: rgb(231, 231, 231);
+    border-radius: 5px;
+}
+
+.price-content {
+    text-align: center;
+    padding: auto;
+    font-size: 22px;
+    color: red;
+    font-weight: 600;
+    padding-bottom: 5px;
+    margin: 0;
+}
+
+/// css cho cái chọn màu
+.title-color {
+    margin: 0;
+    gap: 20px;
+    font-family: cursive;
+    font-size: 20px;
+    font-weight: 300;
+    color: rgb(108, 108, 108);
+}
+
+.article-color {
+    gap: 30px;
+    margin-top: 35px;
+}
+
+.article-color-option {
+    gap: 15px;
+    align-items: center;
+    margin-left: 25px;
+}
+
+// css cho cái chọn size
+.title-size {
+    margin: 0;
+    gap: 20px;
+    font-family: cursive;
+    font-size: 20px;
+    font-weight: 300;
+    color: rgb(108, 108, 108);
+}
+
+.article-size {
+    gap: 30px;
+    margin-top: 15px;
+}
+
+.article-size-option {
+    gap: 15px;
+    align-items: center;
+}
+
+// css cho icons favorite 
+.iconFavorite {
+    color: rgb(200, 195, 195);
+    font-size: 34px;
+    margin-left: 20px;
+}
+
+.article-shopping {
+    gap: 30px;
+    align-items: center;
+}
+
+.icon-cartShopping {
+    font-size: 30px;
+    color: rgb(182, 135, 105);
+}
+
+.button-cart {
+    width: 300px;
+    border: 1px solid rgb(204, 59, 6);
+    font-family: inherit;
+    font-weight: 600;
+    color: rgb(164, 81, 29);
+}
+
+.button-cart:hover {
+    color: rgb(255, 255, 255);
+    background-color: rgb(201, 139, 101);
+}
+
+.button-cart:hover .icon-cartShopping {
+    color: rgb(255, 255, 255);
+}
+
+.input--quantity {
+    width: 60px;
+    height: 50px;
+    border: 1px solid grey;
+    border-left: none;
+    border-right: none;
+    text-align: center;
+}
+
+.btnquantityDown {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    border: 1px solid grey;
+}
+
+.btnquantityUp {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    border: 1px solid grey;
+}
+.btnquantityDown:hover {
+   background-color: grey;
+}
+.btnquantityUp:hover {
+    background-color: grey;
+}
+
+//  css thong tin kich thuoc san pham 
+.title-advertisment {
+    padding-top: 10px;
+    margin-bottom: 0;
+    font-size: 18px;
+    color: rgb(235, 204, 68);
+    font-weight: 600;
+    font-family: cursive;
+}
+
+.title-infor-szie {
+    margin-bottom: 0;
+    font-size: 20px;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 600;
+    color: rgb(160, 129, 108);
+}
+
+.infor-product-size {
+    width: 375px;
+    height: 350px;
+
+}
+
+.article-infor-product-size {
+    text-align: center;
+}
+
+.article-infor-product {
+    // position: absolute;
+}
+
+
+
+.input-image{
+    display: none;
+    // width: 3px;
+}
+#article-upfile{
+    gap:15px;
+    margin-left: 80px;
+}
+#sum_item{
+    margin-bottom: 10px;
+}
+.input-comment{
+    height: 40px;
+    width: 600px;
+    border: 1px solid grey;
+    background-color: rgb(245, 244, 244);
+    border-radius:30px ;
+    padding: 0 20px;
+}
+//css cho cái hình của khách commnet 
+.picture-comment{
+    width: 100px;
+    height: 100px;
+}
+// css cho trang tác giả à nội dung comment
+.article-notification{
+    align-items: center;
+}
+.aritcle-infor-comment {
+    border: 3px solid #c49d5a;
+    width: 100%;
+    height: 600px;
+    padding: 20px;
+    overflow: scroll;
+}
+.article-comment-content{
+    background-color: rgb(244, 244, 244);
+    padding: 5px;
+    margin-bottom: 10px;
+    border-radius: 50px;
+    gap:10px;
+    align-items: center;
+}
+.comment-content{
+    margin-bottom: 0px;
+    
+}
+.writer{
+    margin-bottom: 0px;
+    font-size: 20px;
+    font-weight: 600;
+}
+.avata{
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+}
+.icon-edit{
+    font-size: 20px;
+    padding-left: 10px;
+}
+.article_input-infor{
+    align-items: end;
+}
+.btn-post{
+    color: white;
+    border-radius: 5px;
+    width: 50px;
+    height: 35px;
+    background-color:#9c6402 ;
+    margin-left: 3px;
+    margin-bottom: 2px;
+    border: none;
+}
