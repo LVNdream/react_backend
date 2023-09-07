@@ -1,30 +1,64 @@
-
-
-const productsModel = require('../../models/reactModel/productsModel');
-
-
+const productsModel = require("../../models/reactModel/productsModel");
 
 class productsController {
-
-
   async getProducts(req, res) {
     //const rowPDCT = await menfsModel.returnProduct();
 
     const products = await productsModel.returnProduct();
-    // console.log(products)
-    
-    return res.send({products})
-      
+
+    let productsdetail = [];
+    for (let i = 0; i < products.length; i++) {
+      const product = products[i];
+      const newproduct = {
+        ...product,
+        listColorDetail: await productsModel.returnProductDetail(
+          product.id_product
+        ),
+        listColor: await productsModel.returnProductListColor(
+          product.id_product
+        ),
+      };
+      productsdetail.push(newproduct);
+    }
+
+    return res.send(productsdetail);
   }
   async getProductsByCaterogy(req, res) {
     //const rowPDCT = await menfsModel.returnProduct();
     // console.log(req.params);
 
-    const products = await productsModel.returnProductByCaterogy(req.params.caterogy);
+    const products = await productsModel.returnProductByCaterogy(
+      req.params.caterogy
+    );
     // console.log(products)
-    
-    return res.send({products})
-      
+
+    return res.send({ products });
+  }
+
+  async getProductsDetail(req, res) {
+    console.log(req.params);
+
+    let inforDetail;
+    const row = await productsModel.returnItemDetail(
+      req.params.id,
+      req.params.caterogy,
+      req.params.type
+    );
+
+    if (row[0]) {
+      inforDetail = {
+        ...row[0],
+        listColorDetail: await productsModel.returnProductDetail(
+          row[0].id_product
+        ),
+        listColor: await productsModel.returnProductListColor(
+          row[0].id_product
+        ),
+      };
+    }
+
+    console.log(inforDetail);
+    return res.send(inforDetail);
   }
 
   // Show cac san pham duoc tim kiem
@@ -80,7 +114,6 @@ class productsController {
   //   }
 
   // }
-
 
   // // showMenfashion(req, res) {
   // //   // const rows = await db.load('SELECT * from product');
@@ -185,8 +218,6 @@ class productsController {
   // //     return upload.single('file')
   // //   }
 
-
-
   // // upfile
   // async upfile(req, res) {
   //   let iduser;
@@ -231,6 +262,5 @@ class productsController {
   //     return res.redirect(`${req.originalUrl}`);
   //   }
   // }
-
 }
 module.exports = new productsController();

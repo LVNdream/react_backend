@@ -7,6 +7,8 @@ const productsController = require("../../app/controllers/reactController/produc
 
 router.get('/men',productsController.getProducts);
 router.get('/men/:caterogy',productsController.getProductsByCaterogy);
+router.get('/:type/:caterogy/:id',productsController.getProductsDetail);
+
 
 
 module.exports = router;

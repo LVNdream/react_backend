@@ -1,6 +1,8 @@
 const db = require("../../../utilities/db");
 // const TBL_ListFavorite = 'listfavorite';
 const TBL_product = "products";
+const TBL_productdetail = "productdetail";
+
 // const TBL_nhanxet = 'nhanxet';
 // const TBL_NXpicture = 'imgnhanxet';
 module.exports = {
@@ -11,6 +13,21 @@ module.exports = {
   returnProductByCaterogy: function (caterogy) {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
     return db.load(`SELECT * from ${TBL_product} where caterogy_product="${caterogy}"`);
+  },
+  // return ve mau sac cua san pham
+  returnProductDetail: function (id_product) {
+    // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
+    return db.load(`SELECT * from ${TBL_productdetail} where id_product=${id_product}`);
+  },
+  returnProductListColor: function (id_product) {
+    // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
+    return db.load(`SELECT DISTINCT color from ${TBL_productdetail} where id_product=${id_product}`);
+  },
+
+  // reutrn ve chi tiet cua san pham
+  returnItemDetail: function (id_product,caterogy,type) {
+    // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
+    return db.load(`SELECT * from ${TBL_product} where id_product=${id_product} and caterogy_product="${caterogy}" and type_product="${type}"`);
   },
 
 
