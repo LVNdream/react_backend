@@ -9,9 +9,11 @@ const morgan = require('morgan');
 const handlebar = require('express-handlebars');
 ////Sử dụng để lưu trữ thông tin đăng nhập
 const session = require('express-session');
+const cookieParser = require('cookie-parser')
 // sử dụng body parser
 app.use(bodyParser.json());
 app.use(cors());
+app.use(cookieParser())
 
 
 app.set('trust proxy', 1)

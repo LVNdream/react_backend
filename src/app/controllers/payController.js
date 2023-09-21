@@ -9,7 +9,11 @@ class payController {
 
   }
   async addPayInDB(req, res) {
+
+    // Tạo biến kiểm tra số lượng trong kho 
     let testQuantity = true;
+
+    // kiểm tra từng sản phẩm trong kho với id  màu sắc và size để xem số lượng có hợp lí không
     for (var index = 0; index < req.body.masp.length; index++) {
       const product = await menfashionModel.returnProductById(req.body.masp[index]);
       if (product.soluongsp - req.body.soluong[index] >= 0) {
@@ -19,6 +23,8 @@ class payController {
         break;
       }
     }
+
+    // sau đo thêm thông tin khác hàng và thông tin hóa đơn vào bảng hóa đơn
     if (testQuantity) {
       const entityhd = {
         //idhd: req.body.sodienthoai + 24,
@@ -35,11 +41,19 @@ class payController {
         tongtien: req.body.tongtien,
         trangthai: 'Chờ xác nhận'
       }
+
+      // Thêm vào hóa đơn vào database
       //console.log(entity);
       await payModel.addPay(entityhd);
       //console.log(req.body);
-      // thêm chitiethd
+
+
+      // Lẩy ra tất cả các hóa đơn có trong database
       const rowsHD = await payModel.returnPay();
+
+      // Thêm chi tiết từng sản phẩm vào hóa đơn cuối cùng là hóa đơn mới nhất vừa được thêm vào
+      // Đầu tiên là cập nhật lại số lượng của từng sản phẩm
+      // Sau đó thêm vào chi tiết hóa đơn
       //console.log(rowsHD);
       for (var i = 0; i < req.body.masp.length; i++) {
         const productUpdate = await menfashionModel.returnProductById(req.body.masp[i]);

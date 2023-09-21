@@ -57,7 +57,7 @@ module.exports = {
             //console.log('12333333333333333333333333333333')
             pool.query(sql, entity, function (error, results) {
                 if (error) {
-                    //console.log('ưewewewewewe',error)
+                    console.log('ưewewewewewe',error)
                     resolve({
                         thongbao: 'Tài khoản Email đã tồn tại',
                         maloi: true
@@ -73,6 +73,30 @@ module.exports = {
     },
     updateHD: function (table, entity,condition) {
         const sql = `update ${table} set ? where ?`;
+        return new Promise(function (resolve, reject) {
+            pool.query(sql, [entity,condition], function (error, results) {
+                if (error) {
+                    return reject(error);
+                }
+                resolve(results)
+            });
+        });
+    },
+// ham cap nhat san pha  ben react
+    updateQuantity: function (table, entity,condition) {
+        const sql = `update ${table} set ? where id_product="${condition.id_product}" and color="${condition.color}" and id_size="${condition.id_size}"`;
+        return new Promise(function (resolve, reject) {
+            pool.query(sql, [entity,condition], function (error, results) {
+                if (error) {
+                    return reject(error);
+                }
+                resolve(results)
+            });
+        });
+    },
+
+    updateRefreshToken: function (table, entity,condition) {
+        const sql = `update ${table} set ? where email_user="${condition.email_user}"`;
         return new Promise(function (resolve, reject) {
             pool.query(sql, [entity,condition], function (error, results) {
                 if (error) {

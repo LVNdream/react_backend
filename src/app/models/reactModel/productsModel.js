@@ -12,26 +12,50 @@ module.exports = {
   },
   returnProductByCaterogy: function (caterogy) {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
-    return db.load(`SELECT * from ${TBL_product} where caterogy_product="${caterogy}"`);
+    return db.load(
+      `SELECT * from ${TBL_product} where caterogy_product="${caterogy}"`
+    );
   },
   // return ve mau sac cua san pham
   returnProductDetail: function (id_product) {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
-    return db.load(`SELECT * from ${TBL_productdetail} where id_product=${id_product}`);
+    return db.load(
+      `SELECT * from ${TBL_productdetail} where id_product=${id_product}`
+    );
   },
   returnProductListColor: function (id_product) {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
-    return db.load(`SELECT DISTINCT color from ${TBL_productdetail} where id_product=${id_product}`);
+    return db.load(
+      `SELECT DISTINCT color from ${TBL_productdetail} where id_product=${id_product}`
+    );
   },
 
   // reutrn ve chi tiet cua san pham
-  returnItemDetail: function (id_product,caterogy,type) {
+  returnItemDetail: function (id_product, caterogy, type) {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
-    return db.load(`SELECT * from ${TBL_product} where id_product=${id_product} and caterogy_product="${caterogy}" and type_product="${type}"`);
+    return db.load(
+      `SELECT * from ${TBL_product} where id_product=${id_product} and caterogy_product="${caterogy}" and type_product="${type}"`
+    );
   },
+  returnItemToCheckQuantity: function (id_product, color, size) {
+    return db.load(
+      `SELECT * from ${TBL_productdetail} where id_product=${id_product} and color="${color}" and id_size="${size}"`
+    );
+  },
+  updateQuanlityProduct: async function (entity) {
+    const condition = {
+      id_product: entity.id_product,
+      color: entity.color,
+      id_size:entity.id_size
 
+    };
+    delete entity.id_product;
+    delete entity.id_size;
+    delete entity.color;
+    // console.log(condition,entity)
 
-
+    return db.updateQuantity(TBL_productdetail, entity, condition);
+  },
 
   // returnProductByName: function (tensp) {
   //     return db.load(`SELECT * from ${TBL_product} where tensp like '%${tensp}%'`);

@@ -30,9 +30,24 @@ class productsController {
     const products = await productsModel.returnProductByCaterogy(
       req.params.caterogy
     );
+    let productsdetail = [];
+    for (let i = 0; i < products.length; i++) {
+      const product = products[i];
+      const newproduct = {
+        ...product,
+        listColorDetail: await productsModel.returnProductDetail(
+          product.id_product
+        ),
+        listColor: await productsModel.returnProductListColor(
+          product.id_product
+        ),
+      };
+      productsdetail.push(newproduct);
+    }
+
     // console.log(products)
 
-    return res.send({ products });
+    return res.send(productsdetail);
   }
 
   async getProductsDetail(req, res) {
