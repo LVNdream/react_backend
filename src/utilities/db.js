@@ -72,7 +72,7 @@ module.exports = {
         });
     },
     updateHD: function (table, entity,condition) {
-        const sql = `update ${table} set ? where ?`;
+        const sql = `update ${table} set ? where email="${condition.email}" and id_order="${condition.id_order}"`;
         return new Promise(function (resolve, reject) {
             pool.query(sql, [entity,condition], function (error, results) {
                 if (error) {
@@ -84,7 +84,7 @@ module.exports = {
     },
 // ham cap nhat san pha  ben react
     updateQuantity: function (table, entity,condition) {
-        const sql = `update ${table} set ? where id_product="${condition.id_product}" and color="${condition.color}" and id_size="${condition.id_size}"`;
+        const sql = `update ${table} set ? where id_product="${condition.id_product}" and lower(color)=lower("${condition.color}") and id_size="${condition.id_size}"`;
         return new Promise(function (resolve, reject) {
             pool.query(sql, [entity,condition], function (error, results) {
                 if (error) {

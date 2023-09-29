@@ -1,274 +1,96 @@
-
-const moment = require("moment");
-const bcrypt = require("bcryptjs");
-;
-
+const adminModel = require("../../models/reactModel/adminModel");
+const productsModel = require("../../models/reactModel/productsModel");
 class adminController {
-  addProduct(req, res) {
-    return res.send("Add order success!");
-  }
-
-  restrictAD(req, res, next) {
-    if (!req.session.isAD) {
-      return res.redirect(`/account/login?retUrl=${req.originalUrl}`);
-    }
-    next();
-  }
-  ////hàm để đi tới trang kiểm tra đơn hàng cho Admin
-  // async showAdmin(req, res) {
-  //   res.render('admin',);
-  // };
-  async showAdmin(req, res) {
-    let AllOrder = [];
-    const order = await adminModel.selectAllOrder();
+  async getAllOrder(req, res) {
+    console.log(12312312);
+    // console.log(req.body.email_user);
+    let allOrder = [];
+    let issetHD;
+    const orders = await adminModel.allOrder();
     //console.log(order);
-    let issetHD_Admin;
-    if (order != null) {
-      issetHD_Admin = true;
-      for (let i = 0; i < order.length; i++) {
-        // console.log(value);
-        AllOrder[i] = {
-          listItem: await adminModel.selectCTHD(order[i].idhd),
-          idhd: order[i].idhd,
-          hovaten: order[i].hovaten,
-          ngaylaphd: order[i].ngaylaphd,
-          diachichitiet: order[i].diachichitiet,
-          nhanhang: order[i].nhanhang,
-          trangthai: order[i].trangthai,
-          tongtien: order[i].tongtien,
+    if (orders != null) {
+      issetHD = true;
+
+      for (let i = 0; i < orders.length; i++) {
+        allOrder[i] = {
+          listItem: await adminModel.selectOrder_detail(orders[i].id_order),
+          id_order: orders[i].id_order,
+          fullname: orders[i].fullname,
+          date_order: orders[i].date_order,
+          adress: orders[i].adress,
+          recvie: orders[i].recvie,
+          status_order: orders[i].status_order,
+          total_money_order: orders[i].total_money_order,
+          phone: orders[i].phone,
         };
       }
-      console.log(AllOrder);
     } else {
-      issetHD_Admin = false;
+      issetHD = false;
     }
-    res.render("admin", { AllOrder, issetHD_Admin });
+    res.send({ allOrder, issetHD });
   }
-
-  // Show order theo filter
-  async showOrderFilterByDate(req, res) {
-    let AllOrderByDate = [];
-    let issetHD_ByDate_Admin = false;
-    if (req.body.ngay) {
-      const order = await adminModel.selectOrderByDate(req.body.ngay);
-      if (order != null) {
-        issetHD_ByDate_Admin = true;
-        for (let i = 0; i < order.length; i++) {
-          // console.log(value);
-          AllOrderByDate[i] = {
-            listItem: await adminModel.selectCTHD(order[i].idhd),
-            idhd: order[i].idhd,
-            hovaten: order[i].hovaten,
-            ngaylaphd: order[i].ngaylaphd,
-            diachichitiet: order[i].diachichitiet,
-            nhanhang: order[i].nhanhang,
-            trangthai: order[i].trangthai,
-            tongtien: order[i].tongtien,
-          };
-        }
-        // console.log(AllOrderByDate);
-        res.render("admin", {
-          AllOrder: AllOrderByDate,
-          issetHD_Admin: issetHD_ByDate_Admin,
-        });
-      } else {
-        res.render("admin", {
-          AllOrder: AllOrderByDate,
-          issetHD_Admin: issetHD_ByDate_Admin,
-        });
-      }
-    } else {
-      res.render("admin", {
-        AllOrder: AllOrderByDate,
-        issetHD_Admin: issetHD_ByDate_Admin,
-      });
-    }
-  }
-
-  // Ham tim hoa don theo thang
-  async showOrderFilterByMonth(req, res) {
-    let AllOrderByDate = [];
-    let issetHD_ByDate_Admin = false;
-    if (req.body.thang) {
-      const monthOfYear = req.body.thang;
-      console.log(monthOfYear);
-      console.log(req.body.thang);
-      const year = monthOfYear.slice(0, monthOfYear.indexOf("-"));
-      const month = monthOfYear.slice(
-        monthOfYear.indexOf("-") + 1,
-        monthOfYear.length
-      );
-      console.log(year);
-      console.log(month);
-      const order = await adminModel.selectOrderByMonth(month, year);
-      // console.log(order);
-      if (order != null) {
-        issetHD_ByDate_Admin = true;
-        for (let i = 0; i < order.length; i++) {
-          // console.log(value);
-          AllOrderByDate[i] = {
-            listItem: await adminModel.selectCTHD(order[i].idhd),
-            idhd: order[i].idhd,
-            hovaten: order[i].hovaten,
-            ngaylaphd: order[i].ngaylaphd,
-            diachichitiet: order[i].diachichitiet,
-            nhanhang: order[i].nhanhang,
-            trangthai: order[i].trangthai,
-            tongtien: order[i].tongtien,
-          };
-        }
-        // console.log(AllOrderByDate);
-        res.render("admin", {
-          AllOrder: AllOrderByDate,
-          issetHD_Admin: issetHD_ByDate_Admin,
-        });
-      } else {
-        res.render("admin", {
-          AllOrder: AllOrderByDate,
-          issetHD_Admin: issetHD_ByDate_Admin,
-        });
-      }
-    } else {
-      res.render("admin", {
-        AllOrder: AllOrderByDate,
-        issetHD_Admin: issetHD_ByDate_Admin,
-      });
-    }
-  }
-
-  // ham tra ve hoa donw theo tuan
-  async showOrderFilterByWeek(req, res) {
-    // console.log(req.body.tuan);
-    let AllOrderByWeek = [];
-    let issetHD_ByWeek_Admin = false;
-    if (req.body.tuan) {
-      const weekOfYear = req.body.tuan;
-      // console.log(weekOfYear);
-      // console.log(req.body.thang)
-      const week = weekOfYear.slice(
-        weekOfYear.indexOf("W") + 1,
-        weekOfYear.length
-      );
-      // console.log(year);
-      // console.log(week);
-      const order = await adminModel.selectOrderByWeek(week);
-      // console.log(order);
-      if (order != null) {
-        issetHD_ByWeek_Admin = true;
-        for (let i = 0; i < order.length; i++) {
-          // console.log(value);
-          AllOrderByWeek[i] = {
-            listItem: await adminModel.selectCTHD(order[i].idhd),
-            idhd: order[i].idhd,
-            hovaten: order[i].hovaten,
-            ngaylaphd: order[i].ngaylaphd,
-            diachichitiet: order[i].diachichitiet,
-            nhanhang: order[i].nhanhang,
-            trangthai: order[i].trangthai,
-            tongtien: order[i].tongtien,
-          };
-        }
-        // console.log(AllOrderByDate);
-        res.render("admin", {
-          AllOrder: AllOrderByWeek,
-          issetHD_Admin: issetHD_ByWeek_Admin,
-        });
-      } else {
-        res.render("admin", {
-          AllOrder: AllOrderByWeek,
-          issetHD_Admin: issetHD_ByWeek_Admin,
-        });
-      }
-    } else {
-      res.render("admin", {
-        AllOrder: AllOrderByWeek,
-        issetHD_Admin: issetHD_ByWeek_Admin,
-      });
-    }
-  }
-
-  /////////////////////////// hàm update sản phẩm
-
-  async showUpdateProductAD(req, res) {
-    const AllProduct = await menfsModel.returnProduct();
-    //console.log(order);
-    res.render("updateProduct", { AllProduct });
-  }
-  async showUpdateProductAdFilter(req, res) {
-    console.log(req.body);
-    if (req.body.tensanpham != "") {
-      const AllProduct = await menfsModel.returnProductByName(
-        req.body.tensanpham
-      );
-      // console.log(AllProduct);
-      res.render("updateProduct", { AllProduct });
-    } else {
-      res.redirect("/admin/updateproduct");
-    }
-  }
-
-  logoutAD(req, res) {
-    req.session.isAD = false;
-    req.session.inforAD = null;
-    res.redirect(req.headers.referer);
-  }
-
-  /// hàm cập nhât trạng thái cho đơn hàng
 
   async updateStatus(req, res) {
     console.log(req.body);
-    const kq = await adminModel.updateHD_Admin(req.body);
-    res.redirect("/admin/showdashboard");
-  }
-  // hàm thêm sản phẩm
-  async showAddproductAD(req, res) {
-    //console.log(order);
-    res.render("addProduct");
+    const kq = await adminModel.updateStatusOrder(req.body);
   }
 
-  async updateSLProductAD(req, res) {
-    console.log(req.body.masp);
-    const kq = await adminModel.updateQuanlityProduct(req.body);
-    res.redirect("/admin/updateproduct");
+  async updateProductQuantity(req, res) {
+    // console.log("da vao duoc controller");
+
+    // console.log(req.body);
+    const kq = await adminModel.updateProductQuantity(req.body);
   }
 
-  // hàm thêm sản phẩm
-  async addProductAD(req, res) {
-    const entity = {
-      avata: req.body.avata,
-      tensp: req.body.tensp,
-      giasp: req.body.giasp,
-      soluongsp: req.body.soluongsp,
-    };
-    // console.log(entity);
-    // res.send('post');
-    //console.log(entity);
+  async addProduct(req, res) {
+    // console.log(req.body);
 
-    let kq1 = await adminModel.addProduct(entity);
-    const rowsSP = await menfsModel.returnProduct();
-    //console.log(rowsHD);
-    for (var i = 0; i < req.body.mausac.length; i++) {
-      const chitiethdOJ = {
-        masp: rowsSP[rowsSP.length - 1].masp,
-        mausac: req.body.mausac[i],
+    try {
+      const entityProduct = {
+        picture_product: req.body.pictureProduct,
+        name_product: req.body.nameProduct,
+        price_product: req.body.priceProduct,
+        type_product: req.body.typeProduct,
+        caterogy_product: req.body.caterogyProduct,
       };
-      //console.log(chitiethdOJ);
-      let kq2 = await adminModel.addChitietsp(chitiethdOJ);
+      // console.log(entityProduct);
+
+      let result1 = await adminModel.addProduct(entityProduct);
+      const rowsSP = await productsModel.returnProductDesc();
+      // // console.log(rowsSP);
+
+      for (let i = 0; i < req.body.dataColor.length; i++) {
+        const colorEntity = req.body.dataColor[i];
+        const entityProductDetail = {
+          id_product: rowsSP[0].id_product,
+          id_size: colorEntity.id_size,
+          color: colorEntity.color,
+          quantity_product: colorEntity.quantity_product,
+          id_color: null,
+        };
+        //console.log(chitiethdOJ);
+        let kq2 = await adminModel.addProductDetail(entityProductDetail);
+      }
+
+      // // const resultSave = await usersModel.addAccount(entity);
+      // // res.redirect('/fashion/menfashion');
+
+      return res.send({error:true, mess:"da them thanh cong"});
+    } catch (error) {
+      console.log(error);
+      return res.send({error:true,mess:"error add product"})
     }
-    // const resultSave = await usersModel.addAccount(entity);
-    // res.redirect('/fashion/menfashion');
-    res.send("da them thanh cong");
   }
-  // hàm hủy hóa đơn của khách hàng
-  // async deleteHD_KH(req, res) {
 
-  //   const entity = req.body;
-  //   //console.log(entity);
-  //   // res.send('post');
-  //   //console.log(entity);
-
-  //   let kq = await adminModel.deleteHD(entity);
-  //   res.redirect('/account/checkOrdered')
-  // }
+  async getTypeProduct(req, res) {
+    const type_product = await adminModel.getTypeProduct();
+    return res.send(type_product);
+  }
+  async getCaterogyProduct(req, res) {
+    const caterogy_product = await adminModel.getCaterogyProduct(
+      req.body.type_product
+    );
+    return res.send(caterogy_product);
+  }
 }
 module.exports = new adminController();

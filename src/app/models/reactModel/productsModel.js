@@ -10,6 +10,10 @@ module.exports = {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
     return db.load(`SELECT * from ${TBL_product}`);
   },
+  returnProductDesc: function () {
+    // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
+    return db.load(`SELECT * from ${TBL_product} order by id_product desc`);
+  },
   returnProductByCaterogy: function (caterogy) {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
     return db.load(
@@ -27,6 +31,13 @@ module.exports = {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
     return db.load(
       `SELECT DISTINCT color from ${TBL_productdetail} where id_product=${id_product}`
+    );
+  },
+
+  returnProductListSize: function (id_product) {
+    // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
+    return db.load(
+      `SELECT DISTINCT id_size from ${TBL_productdetail} where id_product=${id_product}`
     );
   },
 

@@ -4,8 +4,8 @@ const bcrypt = require("bcryptjs");
 const dotenv = require("dotenv");
 dotenv.config();
 const jwt = require("jsonwebtoken");
-const adminModel = require("../../models/adminModel");
-const usersModel = require("../../models/usersModel");
+// const adminModel = require("../../models/adminModel");
+// const usersModel = require("../../models/usersModel");
 
 // {
 //   "lastname_user": "le",
@@ -107,7 +107,7 @@ class authController {
           await delete user_temp.password_user;
           await delete user_temp.refreshtoken;
 
-          console.log(user_temp);
+          // console.log(user_temp);
 
           const accessToken = generateAccessToken(user_temp);
           let refreshToken = generateRefreshToken(user_temp);
@@ -119,20 +119,21 @@ class authController {
           // console.log( entityRT)
           const resultupdate = await authModel.updateRefreshToken(entityRT);
 
-          res.cookie("accessToken", accessToken, {
-            httpOnly: true,
-            secure: false,
-            path: "/",
-            sameSite: "strict",
-          });
-          res.cookie("refreshToken", refreshToken, {
-            httpOnly: true,
-            secure: false,
-            path: "/",
-            sameSite: "strict",
-          });
+          // res.cookie("accessToken", accessToken, {
+          //   httpOnly: true,
+          //   secure: false,
+          //   path: "/",
+          //   sameSite: "strict",
+          // });
+          // res.cookie("refreshToken", refreshToken, {
+          //   httpOnly: true,
+          //   secure: false,
+          //   path: "/",
+          //   sameSite: "strict",
+          // });
           isSuccess = true;
           const client = { user_temp, accessToken, refreshToken, isSuccess };
+          console.log(client)
           return res.send(client);
         }
       }
@@ -181,51 +182,44 @@ class authController {
       );
     };
     // console.log(req.cookies.refreshToken);
-    const refreshTokenOnCookie = req.cookies.refreshToken;
+    const refreshTokenOnCookie = req.body.refreshToken;
     // console.log(1231231231,refreshTokenOnCookie)
     if (!refreshTokenOnCookie) {
-      return res.status(401).json("You're not authenticated");
+      return res.send("You're not authenticated");
     } else {
       const decodeToken = jwt.decode(refreshTokenOnCookie);
       console.log("deco", decodeToken);
       const refreshTokenUser = await authModel.getAccountByEmail(
         decodeToken.email_user
       );
-      console.log("acc", refreshTokenUser);
+      // console.log("acc", refreshTokenUser);
       if (refreshTokenUser) {
         // console.log(refreshTokenUser);
         if (refreshTokenUser.refreshtoken === refreshTokenOnCookie) {
-          console.log("token dung r", refreshTokenOnCookie);
+          // console.log("token dung r", refreshTokenOnCookie);
           jwt.verify(
             refreshTokenOnCookie,
             process.env.JWT_REFRESHTOKEN_KEY,
-            // (err,user)=>{
-            //   if(err){
-            //     console.log(err)
-            //   }
-            //   console.log("sasdadadqweqeqw",user)
-
-            // }
+            
             async (error, user) => {
-              console.log("ádasdasdasdasdasd", user);
               if (error) {
                 console.log(error);
               }
               const newAccessToken = generateAccessToken(user);
               const newRefreshToken = generateRefreshToken(user);
               console.log({ newAccessToken, newRefreshToken });
-              res.cookie("accessToken", newAccessToken, {
-                httpOnly: true,
-                secure: false,
-                path: "/",
-                sameSite: "strict",
-              });
-              res.cookie("refreshToken", newRefreshToken, {
-                httpOnly: true,
-                secure: false,
-                path: "/",
-                sameSite: "strict",
-              });
+              // res.cookie("accessToken", newAccessToken, {
+              //   httpOnly: true,
+              //   secure: false,
+              //   path: "/",
+              //   sameSite: "strict",
+              // });
+              // res.cookie("refreshToken", newRefreshToken, {
+              //   httpOnly: true,
+              //   secure: false,
+              //   path: "/",
+              //   sameSite: "strict",
+              // });
               const entityRT = {
                 email_user: decodeToken.email_user,
                 refreshtoken: newRefreshToken,

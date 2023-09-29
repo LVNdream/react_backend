@@ -17,6 +17,7 @@ class productsController {
         listColor: await productsModel.returnProductListColor(
           product.id_product
         ),
+        listSize: await productsModel.returnProductListSize(product.id_product),
       };
       productsdetail.push(newproduct);
     }
@@ -41,11 +42,12 @@ class productsController {
         listColor: await productsModel.returnProductListColor(
           product.id_product
         ),
+        listSize: await productsModel.returnProductListSize(product.id_product),
       };
       productsdetail.push(newproduct);
     }
 
-    // console.log(products)
+    // console.log(productsdetail.listSize)
 
     return res.send(productsdetail);
   }
@@ -69,6 +71,7 @@ class productsController {
         listColor: await productsModel.returnProductListColor(
           row[0].id_product
         ),
+        listSize: await productsModel.returnProductListSize(row[0].id_product),
       };
     }
 
