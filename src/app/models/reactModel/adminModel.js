@@ -2,6 +2,8 @@ const db = require("../../../utilities/db");
 const TBL_ORDERS = "orders";
 const TBL_CTHD = "order_detail ";
 const TBL_PRODUCT = "products";
+const TBL_PRODUCT_DELETED = "product_deleted";
+
 const TBL_PRODUCT_DETAIL = "productdetail";
 const TBL_CATEROGY = "caterogy_product";
 
@@ -85,9 +87,22 @@ module.exports = {
     return db.updateQuantity(TBL_PRODUCT_DETAIL, entity, condition);
   },
 
+  updateProductInfor: async function (entity) {
+    const condition = {
+      id_product: entity.id_product,
+    };
+    delete entity.id_product;
+    return db.updateInforDetailProduct(TBL_PRODUCT, entity, condition);
+  },
+
   addProduct: function (entity) {
     return db.add(TBL_PRODUCT, entity);
   },
+
+  addProductDeleted: function (entity) {
+    return db.add(TBL_PRODUCT_DELETED, entity);
+  },
+
   addProductDetail: function (entity) {
     return db.add(TBL_PRODUCT_DETAIL, entity);
   },

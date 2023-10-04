@@ -11,16 +11,36 @@ router.post(
   adminController.getAllOrder
 );
 router.post("/admin/updatestatus", adminController.updateStatus);
-router.post(
-  "/admin/updateproductquantity",
-  adminController.updateProductQuantity
-);
+
 router.post(
   "/admin/addproduct",
   middlewareAuth.verifyToKenAdminAuth,
   adminController.addProduct
 );
+// /////////////////////////////
+router.post(
+  "/admin/updateproductquantity",
+  middlewareAuth.verifyToKenAdminAuth,
+  adminController.updateProductQuantity
+);
+router.post(
+  "/admin/addproduct/productdetail",
+  middlewareAuth.verifyToKenAdminAuth,
+  adminController.addProductDetail
+);
+router.post(
+  "/admin/updateproduct/productdetail",
+  middlewareAuth.verifyToKenAdminAuth,
+  adminController.updateProductInfor
+);
+// ///////////////////////
 
+router.post(
+  "/admin/deletedroduct",
+  middlewareAuth.verifyToKenAdminAuth,
+  adminController.addProductDelete
+);
+// ///////////////////////
 router.post(
   "/admin/gettypeproduct",
   middlewareAuth.verifyToKenAdminAuth,

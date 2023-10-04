@@ -95,6 +95,18 @@ module.exports = {
         });
     },
 
+    updateInforDetailProduct: function (table, entity,condition) {
+        const sql = `update ${table} set ? where id_product="${condition.id_product}"`;
+        return new Promise(function (resolve, reject) {
+            pool.query(sql, [entity,condition], function (error, results) {
+                if (error) {
+                    return reject(error);
+                }
+                resolve(results)
+            });
+        });
+    },
+
     updateRefreshToken: function (table, entity,condition) {
         const sql = `update ${table} set ? where email_user="${condition.email_user}"`;
         return new Promise(function (resolve, reject) {

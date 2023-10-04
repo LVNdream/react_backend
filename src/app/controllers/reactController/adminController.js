@@ -37,9 +37,51 @@ class adminController {
 
   async updateProductQuantity(req, res) {
     // console.log("da vao duoc controller");
+    let isError;
+    console.log(req.body);
+    const entityUpdate = {
+      id_product: req.body.inforUpdate.id_product,
+      id_size: req.body.inforUpdate.id_size,
+      color: req.body.inforUpdate.color,
+      quantity_product: req.body.inforUpdate.quantity_product,
+    };
+    // console.log(entityUpdate);
 
-    // console.log(req.body);
-    const kq = await adminModel.updateProductQuantity(req.body);
+    try {
+      const kq = await adminModel.updateProductQuantity(entityUpdate);
+      isError = false;
+    } catch (error) {
+      console.log(error);
+      isError = true;
+    }
+    if (isError) {
+      return res.send({ mess: "Error Update", isError });
+    } else {
+      return res.send({ mess: "Update Succsess", isError });
+    }
+  }
+
+  //
+
+  //
+  //
+  //
+  async updateProductInfor(req, res) {
+    // console.log(req.body.inforProduct);
+    let isError;
+
+    try {
+      const kq = await adminModel.updateProductInfor(req.body.inforProduct);
+      isError = false;
+    } catch (error) {
+      console.log(error);
+      isError = true;
+    }
+    if (isError) {
+      return res.send({ mess: "Error Update", isError });
+    } else {
+      return res.send({ mess: "Update Succsess", isError });
+    }
   }
 
   async addProduct(req, res) {
@@ -75,10 +117,51 @@ class adminController {
       // // const resultSave = await usersModel.addAccount(entity);
       // // res.redirect('/fashion/menfashion');
 
-      return res.send({error:true, mess:"da them thanh cong"});
+      return res.send({ error: false, mess: "da them thanh cong" });
     } catch (error) {
       console.log(error);
-      return res.send({error:true,mess:"error add product"})
+      return res.send({ error: true, mess: "error delete product" });
+    }
+  }
+
+  async addProductDelete(req, res) {
+    console.log(req.body);
+
+    try {
+      let result1 = await adminModel.addProductDeleted(req.body.inforProduct);
+
+      return res.send({ error: false, mess: "da xoa thanh cong" });
+    } catch (error) {
+      console.log(error);
+      return res.send({ error: true, mess: "error add product" });
+    }
+  }
+
+  async addProductDetail(req, res) {
+    // console.log(req.body)
+    let isError;
+    try {
+      for (let i = 0; i < req.body.inforProduct.length; i++) {
+        const colorEntity = req.body.inforProduct[i];
+        const entityProductDetail = {
+          id_product: colorEntity.id_product,
+          id_size: colorEntity.id_size,
+          color: colorEntity.color,
+          quantity_product: colorEntity.quantity_product,
+          id_color: null,
+        };
+        // console.log(entityProductDetail);
+        let kq2 = await adminModel.addProductDetail(entityProductDetail);
+        isError = false;
+      }
+    } catch (error) {
+      console.log(error);
+      isError = true;
+    }
+    if (isError) {
+      return res.send({ isError, mess: "Error productdetail" });
+    } else {
+      return res.send({ isError, mess: "Add productdetail success" });
     }
   }
 
