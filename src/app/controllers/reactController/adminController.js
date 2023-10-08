@@ -137,6 +137,11 @@ class adminController {
     }
   }
 
+  async getProductDelete(req,res){
+    const productDeleted = await productsModel.returnProductDeleted()
+    return res.send(productDeleted)
+  }
+
   async addProductDetail(req, res) {
     // console.log(req.body)
     let isError;

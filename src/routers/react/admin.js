@@ -38,7 +38,7 @@ router.post(
 router.post(
   "/admin/deletedroduct",
   middlewareAuth.verifyToKenAdminAuth,
-  adminController.addProductDelete
+  adminController.getProductDelete
 );
 // ///////////////////////
 router.post(

@@ -2,6 +2,8 @@ const db = require("../../../utilities/db");
 // const TBL_ListFavorite = 'listfavorite';
 const TBL_product = "products";
 const TBL_productdetail = "productdetail";
+const TBL_productdeleted = "product_deleted";
+
 
 // const TBL_nhanxet = 'nhanxet';
 // const TBL_NXpicture = 'imgnhanxet';
@@ -9,6 +11,14 @@ module.exports = {
   returnProduct: function () {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
     return db.load(`SELECT * from ${TBL_product}`);
+  },
+  returnProductById: function (id_product) {
+    // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
+    return db.load(`SELECT * from ${TBL_product} where id_product = ${id_product}`);
+  },
+  returnProductDeleted: function () {
+    // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
+    return db.load(`SELECT * from ${TBL_productdeleted}`);
   },
   returnProductDesc: function () {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));

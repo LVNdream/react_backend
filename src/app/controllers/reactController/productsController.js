@@ -1,4 +1,5 @@
 const productsModel = require("../../models/reactModel/productsModel");
+const clientModel = require("../../models/reactModel/clientModel");
 
 class productsController {
   async getProducts(req, res) {
@@ -6,9 +7,31 @@ class productsController {
 
     const products = await productsModel.returnProduct();
 
+    const productdeleted = await productsModel.returnProductDeleted();
+
+    // const listFavoriteProduct = await clientModel.returnAllFavorite();
+
+    // console.log(listFavoriteProduct)
+
+    let productFilter = products;
+    productdeleted.forEach((productDeleted, index) => {
+      productFilter = productFilter.filter((product) => {
+        return productDeleted.id_product_deleted != product.id_product;
+      });
+    });
+
+    // console.log("123123123",productFilter);
+
     let productsdetail = [];
-    for (let i = 0; i < products.length; i++) {
-      const product = products[i];
+    for (let i = 0; i < productFilter.length; i++) {
+      let isFavorite = false;
+      const product = productFilter[i];
+      // listFavoriteProduct.forEach((element, index) => {
+      //   if (product.id_product == element.id_product) {
+      //     isFavorite = true;
+      //   }
+      // });
+      // console.log(isFavorite)
       const newproduct = {
         ...product,
         listColorDetail: await productsModel.returnProductDetail(
@@ -18,12 +41,14 @@ class productsController {
           product.id_product
         ),
         listSize: await productsModel.returnProductListSize(product.id_product),
+        isFavorite,
       };
       productsdetail.push(newproduct);
     }
-
+    // console.log(productsdetail)
     return res.send(productsdetail);
   }
+
   async getProductsByCaterogy(req, res) {
     //const rowPDCT = await menfsModel.returnProduct();
     // console.log(req.params);
@@ -31,9 +56,17 @@ class productsController {
     const products = await productsModel.returnProductByCaterogy(
       req.params.caterogy
     );
+    // const listFavoriteProduct = await clientModel.returnAllFavorite();
+
     let productsdetail = [];
     for (let i = 0; i < products.length; i++) {
+      let isFavorite = false;
       const product = products[i];
+      // listFavoriteProduct.forEach((element, index) => {
+      //   if (product.id_product == element.id_product) {
+      //     isFavorite = true;
+      //   }
+      // });
       const newproduct = {
         ...product,
         listColorDetail: await productsModel.returnProductDetail(
@@ -43,6 +76,7 @@ class productsController {
           product.id_product
         ),
         listSize: await productsModel.returnProductListSize(product.id_product),
+        isFavorite,
       };
       productsdetail.push(newproduct);
     }
@@ -53,7 +87,7 @@ class productsController {
   }
 
   async getProductsDetail(req, res) {
-    console.log(req.params);
+    // console.log(req.params);
 
     let inforDetail;
     const row = await productsModel.returnItemDetail(
@@ -61,8 +95,26 @@ class productsController {
       req.params.caterogy,
       req.params.type
     );
+    let isFavorite = false;
+    // const listFavoriteProduct = await clientModel.returnAllFavorite();
 
-    if (row[0]) {
+    let itemDeleted = false;
+    const productdeleted = await productsModel.returnProductDeleted();
+    productdeleted.forEach((product_deleted, index) => {
+      if (product_deleted.id_product_deleted === row[0].id_product) {
+        itemDeleted = true;
+      }
+    });
+
+    // console.log(itemDeleted)
+
+    if (row[0] && !itemDeleted) {
+      // listFavoriteProduct.forEach((element, index) => {
+      //   if (row[0].id_product == element.id_product) {
+      //     isFavorite = true;
+      //   }
+      // });
+
       inforDetail = {
         ...row[0],
         listColorDetail: await productsModel.returnProductDetail(
@@ -72,213 +124,12 @@ class productsController {
           row[0].id_product
         ),
         listSize: await productsModel.returnProductListSize(row[0].id_product),
+        isFavorite,
       };
     }
 
-    console.log(inforDetail);
+    // console.log(inforDetail);
     return res.send(inforDetail);
   }
-
-  // Show cac san pham duoc tim kiem
-  // async showSearchMenfashion(req, res) {
-  //   //const rowPDCT = await menfsModel.returnProduct();
-
-  //   let serachProductCT = [];
-  //   if (req.query.tensp) {
-  //     const rows = await menfsModel.returnProductByName(req.query.tensp);
-  //     if (rows.length != 0) {
-  //       let searchRowFVR = [];
-  //       // console.log(res.locals.lcAuthUser,'sadadsas')
-  //       if (res.locals.lcIsAuthenticated) {
-  //         searchRowFVR = await menfsModel.returnAllFavorite();
-  //         // console.log(searchRowFVR);
-  //       }
-
-  //       for (let i = 0; i < rows.length; i++) {
-  //         let index = null;
-  //         // them so yeu thich
-  //         if (searchRowFVR != null) {
-  //           for (let j = 0; j < searchRowFVR.length; j++) {
-  //             if (searchRowFVR[j].masp == rows[i].masp && res.locals.lcAuthUser.iduser == searchRowFVR[j].iduser) {
-  //               index = 1;
-  //             }
-  //           }
-  //         }
-  //         // console.log(index);
-  //         serachProductCT[i] = {
-  //           listMau: await menfashionModel.returnCtProduct(rows[i].masp),
-  //           avata: rows[i].avata,
-  //           masp: rows[i].masp,
-  //           tensp: rows[i].tensp,
-  //           giasp: rows[i].giasp,
-  //           soluongsp: rows[i].soluongsp,
-  //           favorite: index,
-  //         }
-  //       }
-  //       // console.log(serachProductCT);
-  //       res.render('menfashion',
-  //         {
-  //           product: serachProductCT,
-  //           empty: rows.length === 0
-  //         });
-  //     }
-  //     else {
-  //       res.render('menfashion',
-  //         {
-  //           product: serachProductCT,
-  //           empty: rows.length === 0
-  //         });
-  //     }
-  //   }
-
-  // }
-
-  // // showMenfashion(req, res) {
-  // //   // const rows = await db.load('SELECT * from product');
-  // //   res.render('menfashion');
-  // // }
-
-  // // hàm thêm vào yêu thích
-  // async addFavorite(req, res) {
-  //   let isExsit = 0;
-  //   if (!req.session.isAuthenticated) {
-  //     return res.send(`/account/login`);
-  //   }
-  //   else {
-
-  //     const listfavorite = await menfsModel.returnAllFavorite();
-
-  //     listfavorite.forEach(element => {
-  //       if (element.masp == req.body.masp && element.iduser == res.locals.lcAuthUser.iduser) {
-  //         isExsit = 1;
-  //         console.log('da trung')
-  //         return isExsit;
-  //       }
-  //     });
-  //     if (isExsit == 0) {
-  //       const entity = {
-  //         iduser: res.locals.lcAuthUser.iduser,
-  //         masp: req.body.masp,
-  //         favorite: true,
-  //       }
-  //       const addFVR = await menfsModel.addFavorite(entity);
-  //       res.send('/fashion/menfashion');
-  //     }
-  //   }
-  // }
-
-  // // ham tra ve san pham chi tiet
-  // async showDetailproduct(req, res) {
-  //   let emptyCTSP = false;
-  //   let emptyNX = false;
-  //   let arrayCTNX = [];
-  //   let ctsp;
-  //   let isAuthCmt=false;
-  //   const masp = req.params.id;
-  //   const sanpham = await menfsModel.returnProductById(masp);
-  //   const arrayNX = await menfashionModel.returnNX_by_masp(masp);
-  //   // console.log(arrayNX);
-  //   // Lấy commnet từ khách
-  //   if (arrayNX.length > 0) {
-  //     emptyNX = true;
-  //     for (let index = 0; index < arrayNX.length; index++) {
-  //       if(res.locals.lcIsAuthenticated){
-  //         // console.log(res.lcAuthUser.iduser)
-  //         // console.log(arrayNX[index].iduser)
-
-  //         if(res.locals.lcAuthUser.iduser==arrayNX[index].iduser){
-  //           isAuthCmt=true;
-  //         }
-  //         else{
-  //           isAuthCmt=false;
-  //         }
-  //       }
-  //       console.log(isAuthCmt);
-  //       arrayCTNX[index] = {
-  //         ho: arrayNX[index].ho,
-  //         ten: arrayNX[index].ten,
-  //         content: arrayNX[index].content,
-  //         img: await menfashionModel.returnIMG_By_idcontent(arrayNX[index].idcontent),
-  //         isAuthCmt:isAuthCmt
-  //       }
-  //     }
-  //   }
-  //   // lấy chi tiết sản phẩm
-  //   if (sanpham) {
-  //     emptyCTSP = true;
-  //     ctsp = {
-  //       listMau: await menfashionModel.returnCtProduct(sanpham.masp),
-  //       avata: sanpham.avata,
-  //       masp: sanpham.masp,
-  //       tensp: sanpham.tensp,
-  //       giasp: sanpham.giasp,
-  //       soluongsp: sanpham.soluongsp,
-  //     };
-  //     // console.log(emptyCTSP);
-  //     // console.log(ctsp);
-  //     res.render('detailProduct', {
-  //       ctproduct: ctsp,
-  //       empty: emptyCTSP,
-  //       ctnx: arrayCTNX,
-  //       emptyNX: emptyNX,
-  //     });
-  //   }
-  //   else {
-  //     // console.log(emptyCTSP);
-  //     return res.redirect(`/fashion/menfashion?retUrl=${req.originalUrl}`);
-  //   }
-
-  // }
-
-  // //tạo hàm lưu file vào server
-  // // UpLoadFile() {
-
-  // //     return upload.single('file')
-  // //   }
-
-  // // upfile
-  // async upfile(req, res) {
-  //   let iduser;
-  //   let ho;
-  //   let ten;
-  //   if (req.session.isAuthenticated) {
-  //     iduser = res.locals.lcAuthUser.iduser;
-  //     ho = res.locals.lcAuthUser.ho;
-  //     ten = res.locals.lcAuthUser.ten;
-
-  //   }
-  //   if (req.session.isAD) {
-  //     iduser = res.locals.lcinforAD.iduser;
-  //     ho = res.locals.lcinforAD.ho;
-  //     ten = res.locals.lcinforAD.ten;
-  //   }
-  //   const entityNX = {
-  //     iduser: iduser,
-  //     masp: req.body.masp,
-  //     ten: ten,
-  //     ho: ho,
-  //     content: req.body.content,
-  //   }
-  //   const addNX = await menfashionModel.addNhanxet(entityNX);
-  //   const arrayNX = await menfashionModel.returnNX();
-  //   let idcontent = arrayNX[arrayNX.length - 1].idcontent
-  //   const arrayImg = req.files;
-  //   // console.log(req.files.length)
-  //   // console.log(entityNX);
-  //   // console.log(addNX);
-  //   if (arrayImg.length > 0) {
-  //     for (let index = 0; index < arrayImg.length; index++) {
-  //       const entity = {
-  //         idcontent: idcontent,
-  //         namepicture: arrayImg[index].filename
-
-  //       }
-  //       const addImg = await menfashionModel.addNXpicture(entity);
-  //     }
-  //   }
-  //   if (addNX) {
-  //     return res.redirect(`${req.originalUrl}`);
-  //   }
-  // }
 }
 module.exports = new productsController();
