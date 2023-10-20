@@ -86,7 +86,7 @@ class clientController {
 
   async deleteAllFavoriteProduct(req, res) {
     try {
-      console.log("12312")
+      console.log("12312");
       console.log(req.body);
       const deleted = await clientModel.deleteAllFavorite(req.body.id_user);
 
@@ -94,6 +94,21 @@ class clientController {
     } catch (error) {
       console.log(error);
       return res.send("Delete All error");
+    }
+  }
+  async deleteOrder(req, res) {
+    try {
+      // console.log("12312");
+      // console.log(req.body);
+      const deleted = await clientModel.deleteOrder(
+        req.body.inforDelete.email,
+        req.body.inforDelete.id_order
+      );
+
+      return res.send({ mess: "Deleted Order Success", isError: false });
+    } catch (error) {
+      console.log(error);
+      return res.send({ mess: "Delete Order error", isError: true });
     }
   }
 }

@@ -1,5 +1,6 @@
 const db = require("../../../utilities/db");
 const TBL_LF = "listfavorite";
+const TBL_ORDER = "orders"
 module.exports = {
   returnAllFavorite: function () {
     return db.load(`SELECT * from ${TBL_LF}`);
@@ -19,5 +20,8 @@ module.exports = {
   },
   returnAllFavoriteByUser: function (id_user) {
     return db.load(`SELECT * from ${TBL_LF} where id_user='${id_user}'`);
+  },
+  deleteOrder: function (email,id_order) {
+    return db.deleteOrder(TBL_ORDER,email,id_order);
   },
 };

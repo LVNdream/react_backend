@@ -7,7 +7,9 @@ const middlewareAuth= require('../../app/controllers/reactController/middlewareA
 
 
 
+router.post('/clientgetordersuccess',middlewareAuth.verifyToken,orderController.clientGetOrderSuccess);
 router.post('/clientgetorder',middlewareAuth.verifyToken,orderController.clientGetOrder);
+
 
 
 

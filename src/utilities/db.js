@@ -140,4 +140,16 @@ module.exports = {
       });
     });
   },
+  deleteOrder: function (table, email, id_order) {
+    const sql = `delete from ${table} where email ="${email}" and  id_order = "${id_order}"  `;
+    return new Promise(function (resolve, reject) {
+      pool.query(sql, function (error, results) {
+        if (error) {
+          return reject(error);
+        }
+        resolve(results);
+      });
+    });
+  },
 };
+// //////////////////

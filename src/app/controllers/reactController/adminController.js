@@ -13,6 +13,7 @@ class adminController {
 
       for (let i = 0; i < orders.length; i++) {
         allOrder[i] = {
+          email: orders[i].email,
           listItem: await adminModel.selectOrder_detail(orders[i].id_order),
           id_order: orders[i].id_order,
           fullname: orders[i].fullname,
@@ -31,8 +32,20 @@ class adminController {
   }
 
   async updateStatus(req, res) {
-    console.log(req.body);
-    const kq = await adminModel.updateStatusOrder(req.body);
+    try {
+      // console.log(req.body);
+      const entityUpdate = {
+        email: req.body.inforUpdate.email,
+        id_order: req.body.inforUpdate.id_order,
+        status_order: req.body.inforUpdate.status_order,
+      };
+      // console.log(entityUpdate)
+      const kq = await adminModel.updateStatusOrder(entityUpdate);
+      return res.send("Update Status Success");
+    } catch (error) {
+      console.log(error);
+      return res.send("Update Status Error");
+    }
   }
 
   async updateProductQuantity(req, res) {
@@ -137,9 +150,9 @@ class adminController {
     }
   }
 
-  async getProductDelete(req,res){
-    const productDeleted = await productsModel.returnProductDeleted()
-    return res.send(productDeleted)
+  async getProductDelete(req, res) {
+    const productDeleted = await productsModel.returnProductDeleted();
+    return res.send(productDeleted);
   }
 
   async addProductDetail(req, res) {

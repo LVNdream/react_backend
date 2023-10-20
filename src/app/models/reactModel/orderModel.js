@@ -12,6 +12,15 @@ module.exports = {
     }
     return rowOrder;
   },
+  orderSuccessByEmail: async function (email) {
+    const rowOrder = await db.load(
+      `select * from ${TBL_ORDERS} where email = '${email}' and status_order="Giao hàng thành công" order by date_order desc`
+    );
+    if (rowOrder.length === 0) {
+      return null;
+    }
+    return rowOrder;
+  },
   selectOrder_detail: async function (id_order) {
     const rowOrder_detail = await db.load(
       `select ${TBL_CTHD}.id_product,picture_product,name_product,price_product,quantity,size,color,price_temp from ${TBL_CTHD},${TBL_PRODUCT} where ${TBL_CTHD}.id_product=${TBL_PRODUCT}.id_product and ${TBL_CTHD}.id_order = '${id_order}'`

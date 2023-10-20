@@ -23,9 +23,14 @@ router.post(
 );
 
 router.post(
-    "/deleteallfavorite",
-    middlewareAuth.verifyToken,
-    clientController.deleteAllFavoriteProduct
-  );
+  "/deleteallfavorite",
+  middlewareAuth.verifyToken,
+  clientController.deleteAllFavoriteProduct
+);
+router.post(
+  "/deleteorder",
+  middlewareAuth.verifyToken,
+  clientController.deleteOrder
+);
 
 module.exports = router;

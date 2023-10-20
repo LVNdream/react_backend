@@ -38,6 +38,11 @@ router.post(
 router.post(
   "/admin/deletedroduct",
   middlewareAuth.verifyToKenAdminAuth,
+  adminController.addProductDelete
+);
+router.post(
+  "/admin/getdeletedroduct",
+  middlewareAuth.verifyToKenAdminAuth,
   adminController.getProductDelete
 );
 // ///////////////////////

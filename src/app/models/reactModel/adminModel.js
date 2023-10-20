@@ -19,6 +19,7 @@ module.exports = {
     }
     return rowOrder;
   },
+  
   allOrder: async function () {
     const rowOrder = await db.load(
       `select * from ${TBL_ORDERS} order by date_order desc`
