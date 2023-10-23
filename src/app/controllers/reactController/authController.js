@@ -133,7 +133,7 @@ class authController {
           // });
           isSuccess = true;
           const client = { user_temp, accessToken, refreshToken, isSuccess };
-          console.log(client)
+          // console.log(client)
           return res.send(client);
         }
       }
@@ -188,7 +188,7 @@ class authController {
       return res.send("You're not authenticated");
     } else {
       const decodeToken = jwt.decode(refreshTokenOnCookie);
-      console.log("deco", decodeToken);
+      // console.log("deco", decodeToken);
       const refreshTokenUser = await authModel.getAccountByEmail(
         decodeToken.email_user
       );
@@ -207,7 +207,7 @@ class authController {
               }
               const newAccessToken = generateAccessToken(user);
               const newRefreshToken = generateRefreshToken(user);
-              console.log({ newAccessToken, newRefreshToken });
+              // console.log({ newAccessToken, newRefreshToken });
               // res.cookie("accessToken", newAccessToken, {
               //   httpOnly: true,
               //   secure: false,

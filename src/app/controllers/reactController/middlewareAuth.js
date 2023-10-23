@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
 const middlewareAuth = {
   verifyToken: (req, res, next) => {
-    // console.log(req.body.accessToken);
+    // console.log(req.body.accessToken, "aaaaaaaaaaaaaaaaaaa");
+    // console.log(req);
     let isErrorLogin = false;
     const token = req.body.accessToken;
     // console.log(token);
@@ -31,7 +32,10 @@ const middlewareAuth = {
       } else {
         isErrorLoginAd = true;
 
-        return res.send({ mess: "You're not authenticated not admin", isErrorLoginAd });
+        return res.send({
+          mess: "You're not authenticated not admin",
+          isErrorLoginAd,
+        });
       }
     });
   },

@@ -4,9 +4,8 @@ const TBL_product = "products";
 const TBL_productdetail = "productdetail";
 const TBL_productdeleted = "product_deleted";
 
-
-// const TBL_nhanxet = 'nhanxet';
-// const TBL_NXpicture = 'imgnhanxet';
+const TBL_COMMENTS = "comments";
+const TBL_COMMENTS_IMAGE = 'comments_image';
 module.exports = {
   returnProduct: function () {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
@@ -14,7 +13,9 @@ module.exports = {
   },
   returnProductById: function (id_product) {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
-    return db.load(`SELECT * from ${TBL_product} where id_product = ${id_product}`);
+    return db.load(
+      `SELECT * from ${TBL_product} where id_product = ${id_product}`
+    );
   },
   returnProductDeleted: function () {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
@@ -67,8 +68,7 @@ module.exports = {
     const condition = {
       id_product: entity.id_product,
       color: entity.color,
-      id_size:entity.id_size
-
+      id_size: entity.id_size,
     };
     delete entity.id_product;
     delete entity.id_size;
@@ -78,6 +78,20 @@ module.exports = {
     return db.updateQuantity(TBL_productdetail, entity, condition);
   },
 
+  returnCmt_By_Id_product: function (id_product) {
+    return db.load(
+      `SELECT * from ${TBL_COMMENTS} where id_product='${id_product}'`
+    );
+  },
+
+  returnIMG_By_Id_content: function (id_content) {
+    return db.load(
+      `SELECT * from ${TBL_COMMENTS_IMAGE} where id_content = '${id_content}'`
+    );
+  },
+  // ///////
+  //
+  //
   // returnProductByName: function (tensp) {
   //     return db.load(`SELECT * from ${TBL_product} where tensp like '%${tensp}%'`);
   // },

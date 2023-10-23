@@ -2,6 +2,8 @@ const db = require("../../../utilities/db");
 const TBL_ORDERS = "orders";
 const TBL_CTHD = "order_detail ";
 const TBL_PRODUCT = "products";
+
+
 module.exports = {
   orderByEmail: async function (email) {
     const rowOrder = await db.load(
@@ -70,4 +72,6 @@ module.exports = {
   deleteHD: function (entity) {
     return db.delete(TBL_ORDERS, entity);
   },
+
+  
 };

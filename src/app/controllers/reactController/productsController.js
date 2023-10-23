@@ -99,6 +99,7 @@ class productsController {
     // const listFavoriteProduct = await clientModel.returnAllFavorite();
 
     let itemDeleted = false;
+
     const productdeleted = await productsModel.returnProductDeleted();
     productdeleted.forEach((product_deleted, index) => {
       if (product_deleted.id_product_deleted === row[0].id_product) {
@@ -115,6 +116,32 @@ class productsController {
       //   }
       // });
 
+      // lay cac cmt cho san pham
+      // console.log("asdsdsdsdsdsd",row[0].id_product)
+      const arrayCmt = await productsModel.returnCmt_By_Id_product(
+        row[0].id_product
+      );
+      // console.log("asdsdsdsdsdsd",arrayCmt)
+      let commentDetail = [];
+      // Lấy commnet từ khách
+      if (arrayCmt.length > 0) {
+        for (let index = 0; index < arrayCmt.length; index++) {
+          commentDetail[index] = {
+            id_user: arrayCmt[index].id_user,
+            lastname_user: arrayCmt[index].lastname_user,
+            firstname_user: arrayCmt[index].firstname_user,
+
+            content: arrayCmt[index].content,
+            img: await productsModel.returnIMG_By_Id_content(
+              arrayCmt[index].id_content
+            ),
+          };
+        }
+      }
+      // console.log(commentDetail)
+
+      //
+
       inforDetail = {
         ...row[0],
         listColorDetail: await productsModel.returnProductDetail(
@@ -125,6 +152,7 @@ class productsController {
         ),
         listSize: await productsModel.returnProductListSize(row[0].id_product),
         isFavorite,
+        commentDetail,
       };
     }
 

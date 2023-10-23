@@ -1,3 +1,4 @@
+const cloudinary = require("../../../config/cloudinaryConfig");
 const clientModel = require("../../models/reactModel/clientModel");
 const productsModel = require("../../models/reactModel/productsModel");
 
@@ -109,6 +110,75 @@ class clientController {
     } catch (error) {
       console.log(error);
       return res.send({ mess: "Delete Order error", isError: true });
+    }
+  }
+  // ham dung de chanupload anh len tren cloudinary
+  async uploadImg(req, res) {
+    try {
+      // console.log(req.body.accessToken);
+      // console.log(req.body.id_user);
+      // console.log(req.files.length);
+      // console.log(req.body.lastname_user);
+      // console.log(req.body.firstname_user);
+      // console.log(req.body.id_product);
+
+      // ham them content ne co
+      if (req.body.content) {
+        const entityComment = {
+          id_user: req.body.id_user,
+          lastname_user: req.body.lastname_user,
+          firstname_user: req.body.firstname_user,
+          id_product: req.body.id_product,
+          content: req.body.content,
+        };
+        // console.log(entityComment);
+
+        const resultAdd = await clientModel.addComment(entityComment);
+      }
+      // hm de them hinh anh neu co
+      if (req.files.length > 0) {
+        if (!req.body.content) {
+          const entityComment = {
+            id_user: req.body.id_user,
+            lastname_user: req.body.lastname_user,
+            firstname_user: req.body.firstname_user,
+            id_product: req.body.id_product,
+            content: "",
+          };
+          const resultAdd = await clientModel.addComment(entityComment);
+        }
+
+        const allCmtById_user = await clientModel.returnAllCmtById_user(
+          req.body.id_user
+        );
+        // console.log(allCmtById_user);
+
+        const images = req.files.map((file) => {
+          return file.path;
+        });
+        // const uploadedImages = [];
+        for (let image of images) {
+          const results = await cloudinary.uploader.upload(image);
+          const entityImageComment = {
+            id_content: allCmtById_user[allCmtById_user.length - 1].id_content,
+            src_image: results.secure_url,
+            publicid_image: results.public_id,
+          };
+
+          const resultAddImageCmt = await clientModel.addComment_Picture(
+            entityImageComment
+          );
+          // uploadedImages.push({
+          //   url: results.secure_url,
+          //   publicId: results.public_id,
+          // });
+        }
+      }
+
+      return res.send("Add comment success");
+    } catch (error) {
+      console.log(error);
+      return res.send("Add comment error");
     }
   }
 }
