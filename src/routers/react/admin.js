@@ -56,5 +56,11 @@ router.post(
   middlewareAuth.verifyToKenAdminAuth,
   adminController.getCaterogyProduct
 );
+router.post(
+  "/admin/getorderfilterbydate",
+  middlewareAuth.verifyToKenAdminAuth,
+  adminController.getOrderFilterByDate
+);
+
 
 module.exports = router;

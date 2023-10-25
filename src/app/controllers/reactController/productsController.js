@@ -3,13 +3,14 @@ const clientModel = require("../../models/reactModel/clientModel");
 
 class productsController {
   async getProducts(req, res) {
-    //const rowPDCT = await menfsModel.returnProduct();
+    console.log(req.query.id_user);
+    const id_user = req.query.id_user;
 
     const products = await productsModel.returnProduct();
 
     const productdeleted = await productsModel.returnProductDeleted();
 
-    // const listFavoriteProduct = await clientModel.returnAllFavorite();
+    const listFavoriteProduct = await clientModel.returnAllFavorite();
 
     // console.log(listFavoriteProduct)
 
@@ -26,11 +27,13 @@ class productsController {
     for (let i = 0; i < productFilter.length; i++) {
       let isFavorite = false;
       const product = productFilter[i];
-      // listFavoriteProduct.forEach((element, index) => {
-      //   if (product.id_product == element.id_product) {
-      //     isFavorite = true;
-      //   }
-      // });
+      if (id_user) {
+        listFavoriteProduct.forEach((element, index) => {
+          if (product.id_product == element.id_product && id_user==element.id_user) {
+            isFavorite = true;
+          }
+        });
+      }
       // console.log(isFavorite)
       const newproduct = {
         ...product,

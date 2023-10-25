@@ -193,5 +193,11 @@ class adminController {
     );
     return res.send(caterogy_product);
   }
+
+  async getOrderFilterByDate(req, res) {
+    console.log(req.body);
+
+    return res.send("123123");
+  }
 }
 module.exports = new adminController();
