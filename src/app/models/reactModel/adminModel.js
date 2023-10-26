@@ -7,8 +7,6 @@ const TBL_PRODUCT_DELETED = "product_deleted";
 const TBL_PRODUCT_DETAIL = "productdetail";
 const TBL_CATEROGY = "caterogy_product";
 
-
-
 module.exports = {
   orderByEmail: async function (email) {
     const rowOrder = await db.load(
@@ -19,7 +17,7 @@ module.exports = {
     }
     return rowOrder;
   },
-  
+
   allOrder: async function () {
     const rowOrder = await db.load(
       `select * from ${TBL_ORDERS} order by date_order desc`
@@ -43,7 +41,7 @@ module.exports = {
   // get type_product
 
   getTypeProduct: async function () {
-    const rowType= await db.load(
+    const rowType = await db.load(
       `select DISTINCT type_product from ${TBL_CATEROGY}`
     );
     if (rowType.length === 0) {
@@ -55,7 +53,7 @@ module.exports = {
   // get_caterogy_product
 
   getCaterogyProduct: async function (type_product) {
-    const rowCaterogy= await db.load(
+    const rowCaterogy = await db.load(
       `select caterogy_product from ${TBL_CATEROGY} where type_product="${type_product}"`
     );
     if (rowCaterogy.length === 0) {
@@ -63,7 +61,6 @@ module.exports = {
     }
     return rowCaterogy;
   },
-
 
   updateStatusOrder: async function (entity) {
     const condition = {
@@ -112,5 +109,52 @@ module.exports = {
 
   deleteHD: function (entity) {
     return db.delete(TBL_ORDERS, entity);
+  },
+  // getOrderByDate
+  getOrderbyFilterDate: async function (startday, endday) {
+    const rowsOrder = await db.load(
+      `select *,count(date_order) as total_order from ${TBL_ORDERS} where date_order>="${startday}" and date_order <="${endday}" group by date_order`
+    );
+    if (rowsOrder.length === 0) {
+      return null;
+    }
+    return rowsOrder;
+  },
+  // filter
+  getOrderbyFilterDateByEmail: async function (startday, endday, email) {
+    const rowsOrder = await db.load(
+      `select *,count(date_order) as total_order from ${TBL_ORDERS} where email="${email}" and date_order>="${startday}" and date_order <="${endday}" group by date_order`
+    );
+    if (rowsOrder.length === 0) {
+      return [];
+    }
+    return rowsOrder;
+  },
+  getOrderbyFilterDateByTypeOrder: async function (
+    startday,
+    endday,
+    status_order
+  ) {
+    const rowsOrder = await db.load(
+      `select *,count(date_order) as total_order from ${TBL_ORDERS} where status_order="${status_order}" and date_order>="${startday}" and date_order <="${endday}" group by date_order`
+    );
+    if (rowsOrder.length === 0) {
+      return [];
+    }
+    return rowsOrder;
+  },
+  getOrderbyFilterDateByTypeOrderAndEmail: async function (
+    startday,
+    endday,
+    email,
+    status_order
+  ) {
+    const rowsOrder = await db.load(
+      `select *,count(date_order) as total_order from ${TBL_ORDERS} where status_order="${status_order}" and email="${email}" and date_order>="${startday}" and date_order <="${endday}" group by date_order`
+    );
+    if (rowsOrder.length === 0) {
+      return [];
+    }
+    return rowsOrder;
   },
 };

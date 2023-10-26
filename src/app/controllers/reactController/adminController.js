@@ -196,8 +196,46 @@ class adminController {
 
   async getOrderFilterByDate(req, res) {
     console.log(req.body);
+    const allOrder = await adminModel.getOrderbyFilterDate(
+      req.body.filter.startday,
+      req.body.filter.endday
+    );
 
-    return res.send("123123");
+    return res.send(allOrder);
+  }
+
+  async getOrderFilterByDate_Email(req, res) {
+    console.log(req.body);
+    const allOrder = await adminModel.getOrderbyFilterDateByEmail(
+      req.body.filter.startday,
+      req.body.filter.endday,
+      req.body.filter.email
+    );
+
+    return res.send(allOrder);
+  }
+  async getOrderFilterByDate_TypeOrder(req, res) {
+    console.log(req.body);
+    const allOrder = await adminModel.getOrderbyFilterDateByTypeOrder(
+      req.body.filter.startday,
+      req.body.filter.endday,
+      req.body.filter.status_order
+    );
+
+    return res.send(allOrder);
+  }
+
+  async getOrderFilterByDate_TypeOrder_Email(req, res) {
+    console.log(req.body);
+    const allOrder = await adminModel.getOrderbyFilterDateByTypeOrderAndEmail(
+      req.body.filter.startday,
+      req.body.filter.endday,
+      req.body.filter.email,
+      req.body.filter.status_order
+    );
+      
+    return res.send(allOrder);
   }
 }
+
 module.exports = new adminController();

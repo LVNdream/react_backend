@@ -27,6 +27,9 @@ class payController {
     // Kiểm tra số lượng có phù hợp hay không để thêm hóa đơn vào giỏ hàng
 
     if (checkQuantity) {
+
+      const currentDay  = new Date()
+
       const entityOrder = {
         fullname: req.body.fullname,
         email: req.body.email,
@@ -37,7 +40,10 @@ class payController {
         note_order: req.body.note_order,
         total_money_order: req.body.total_money_order,
         status_order: req.body.status,
+        date_order:`${currentDay.getFullYear()}-${currentDay.getMonth()+1}-${currentDay.getDate()}`
       };
+
+      // console.log(entityOrder)
       // Thêm vào hóa đơn vào database
 
       const addorder = await payModel.addOrder(entityOrder);
@@ -60,7 +66,7 @@ class payController {
             itemUpdate[0].quantity_product - itemsInCart[i].quantity,
         };
 
-        console.log(entityUpdateQuantity);
+        // console.log(entityUpdateQuantity);
         const resultUpdated = await productModel.updateQuanlityProduct(
           entityUpdateQuantity
         );
