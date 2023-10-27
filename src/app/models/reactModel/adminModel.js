@@ -157,4 +157,45 @@ module.exports = {
     }
     return rowsOrder;
   },
+
+  // filter by year
+  getOrderbyFilterDateBy_Year: async function (year) {
+    const rowsOrder = await db.load(
+      `select month(date_order) as date_order,count( date_order) as total_order from orders where year(date_order) = "${year}" group by month(date_order) order by month(date_order)`
+    );
+    if (rowsOrder.length === 0) {
+      return [];
+    }
+    return rowsOrder;
+  },
+  // ///////
+  getOrderbyFilterDateBy_Year_Email: async function (year,email) {
+    const rowsOrder = await db.load(
+      `select month(date_order) as date_order,count( date_order) as total_order from orders where email="${email}" and year(date_order) = "${year}" group by month(date_order) order by month(date_order)`
+    );
+    if (rowsOrder.length === 0) {
+      return [];
+    }
+    return rowsOrder;
+  },
+
+  getOrderbyFilterDateBy_Year_TypeOrder: async function (year,status_order) {
+    const rowsOrder = await db.load(
+      `select month(date_order) as date_order,count( date_order) as total_order from orders where status_order="${status_order}" and year(date_order) = "${year}" group by month(date_order) order by month(date_order)`
+    );
+    if (rowsOrder.length === 0) {
+      return [];
+    }
+    return rowsOrder;
+  },
+
+  getOrderbyFilterDateBy_Year_EmailAndTypeOrder: async function (year,email,status_order) {
+    const rowsOrder = await db.load(
+      `select month(date_order) as date_order,count( date_order) as total_order from orders where email="${email}" and status_order="${status_order}" and year(date_order) = "${year}" group by month(date_order) order by month(date_order)`
+    );
+    if (rowsOrder.length === 0) {
+      return [];
+    }
+    return rowsOrder;
+  },
 };

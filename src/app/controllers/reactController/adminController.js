@@ -193,7 +193,7 @@ class adminController {
     );
     return res.send(caterogy_product);
   }
-
+  // filter by date
   async getOrderFilterByDate(req, res) {
     console.log(req.body);
     const allOrder = await adminModel.getOrderbyFilterDate(
@@ -233,7 +233,47 @@ class adminController {
       req.body.filter.email,
       req.body.filter.status_order
     );
-      
+
+    return res.send(allOrder);
+  }
+  // filter by year
+  async getOrderFilterBy_Year(req, res) {
+    console.log(req.body);
+    const allOrder = await adminModel.getOrderbyFilterDateBy_Year(
+      req.body.filter.year
+    );
+
+    return res.send(allOrder);
+  }
+
+  async getOrderFilterByDate_Year_Email(req, res) {
+    console.log(req.body);
+    const allOrder = await adminModel.getOrderbyFilterDateBy_Year_Email(
+      req.body.filter.year,
+      req.body.filter.email
+    );
+
+    return res.send(allOrder);
+  }
+  async getOrderFilterByDate_Year_TypeOrder(req, res) {
+    console.log(req.body);
+    const allOrder = await adminModel.getOrderbyFilterDateBy_Year_TypeOrder(
+      req.body.filter.year,
+      req.body.filter.status_order
+    );
+
+    return res.send(allOrder);
+  }
+
+  async getOrderFilterByDate_Year_TypeOrder_Email(req, res) {
+    console.log(req.body);
+    const allOrder =
+      await adminModel.getOrderbyFilterDateBy_Year_EmailAndTypeOrder(
+        req.body.filter.year,
+        req.body.filter.email,
+        req.body.filter.status_order
+      );
+
     return res.send(allOrder);
   }
 }

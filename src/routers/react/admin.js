@@ -62,20 +62,44 @@ router.post(
   adminController.getOrderFilterByDate
 );
 
-// filter //////////
+// filter theo ngay //////////
 router.post(
   "/admin/getorderfilterbydate/email",
   middlewareAuth.verifyToKenAdminAuth,
   adminController.getOrderFilterByDate_Email
-);router.post(
+);
+router.post(
   "/admin/getorderfilterbydate/typeorder",
   middlewareAuth.verifyToKenAdminAuth,
   adminController.getOrderFilterByDate_TypeOrder
-);router.post(
+);
+router.post(
   "/admin/getorderfilterbydate/typeorderandemail",
   middlewareAuth.verifyToKenAdminAuth,
   adminController.getOrderFilterByDate_TypeOrder_Email
 );
 
+// filter theo năm
+router.post(
+  "/admin/getorderfilterbydate/year",
+  middlewareAuth.verifyToKenAdminAuth,
+  adminController.getOrderFilterBy_Year
+);
+
+router.post(
+  "/admin/getorderfilterbydate/yearemail",
+  middlewareAuth.verifyToKenAdminAuth,
+  adminController.getOrderFilterByDate_Year_Email
+);
+router.post(
+  "/admin/getorderfilterbydate/yeartypeorder",
+  middlewareAuth.verifyToKenAdminAuth,
+  adminController.getOrderFilterByDate_Year_TypeOrder
+);
+router.post(
+  "/admin/getorderfilterbydate/yeartypeorderandemail",
+  middlewareAuth.verifyToKenAdminAuth,
+  adminController.getOrderFilterByDate_Year_TypeOrder_Email
+);
 
 module.exports = router;
