@@ -169,7 +169,7 @@ module.exports = {
     return rowsOrder;
   },
   // ///////
-  getOrderbyFilterDateBy_Year_Email: async function (year,email) {
+  getOrderbyFilterDateBy_Year_Email: async function (year, email) {
     const rowsOrder = await db.load(
       `select month(date_order) as date_order,count( date_order) as total_order from orders where email="${email}" and year(date_order) = "${year}" group by month(date_order) order by month(date_order)`
     );
@@ -179,7 +179,7 @@ module.exports = {
     return rowsOrder;
   },
 
-  getOrderbyFilterDateBy_Year_TypeOrder: async function (year,status_order) {
+  getOrderbyFilterDateBy_Year_TypeOrder: async function (year, status_order) {
     const rowsOrder = await db.load(
       `select month(date_order) as date_order,count( date_order) as total_order from orders where status_order="${status_order}" and year(date_order) = "${year}" group by month(date_order) order by month(date_order)`
     );
@@ -189,9 +189,38 @@ module.exports = {
     return rowsOrder;
   },
 
-  getOrderbyFilterDateBy_Year_EmailAndTypeOrder: async function (year,email,status_order) {
+  getOrderbyFilterDateBy_Year_EmailAndTypeOrder: async function (
+    year,
+    email,
+    status_order
+  ) {
     const rowsOrder = await db.load(
       `select month(date_order) as date_order,count( date_order) as total_order from orders where email="${email}" and status_order="${status_order}" and year(date_order) = "${year}" group by month(date_order) order by month(date_order)`
+    );
+    if (rowsOrder.length === 0) {
+      return [];
+    }
+    return rowsOrder;
+  },
+  // thống kê doanh thu theo ngày
+revenueByDate: async function (
+    startday,
+    endday
+  ) {
+    const rowsOrder = await db.load(
+      `select *, sum(total_money_order) as total_money from orders where status_order="Giao hàng thành công" and date_order >= "${startday}" and date_order <= "${endday}" group by date_order;`
+    );
+    if (rowsOrder.length === 0) {
+      return [];
+    }
+    return rowsOrder;
+  },
+  // thống kê doanh thu theo tháng
+  revenueByYear: async function (
+    year
+  ) {
+    const rowsOrder = await db.load(
+      `select month(date_order) as date_order,sum(total_money_order) as total_money from orders where status_order="Giao hàng thành công" and  year(date_order) = "2023" group by month(date_order) order by month(date_order);`
     );
     if (rowsOrder.length === 0) {
       return [];

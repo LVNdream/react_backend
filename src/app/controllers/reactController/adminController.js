@@ -276,6 +276,23 @@ class adminController {
 
     return res.send(allOrder);
   }
+  // doanh thu theo ngày
+  async revenueByDate(req, res) {
+    // console.log(req.body);
+    const revenue = await adminModel.revenueByDate(
+      req.body.filter.startday,
+      req.body.filter.endday
+    );
+
+    return res.send(revenue);
+  }
+  // thống kê doanh thu theo năm
+  async revenueByYear(req, res) {
+    // console.log(req.body);
+    const revenue = await adminModel.revenueByYear(req.filter.year);
+
+    return res.send(revenue);
+  }
 }
 
 module.exports = new adminController();

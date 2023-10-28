@@ -101,5 +101,15 @@ router.post(
   middlewareAuth.verifyToKenAdminAuth,
   adminController.getOrderFilterByDate_Year_TypeOrder_Email
 );
-
+//  thống kê doanh thu theo date
+router.post(
+  "/admin/revenue/date",
+  middlewareAuth.verifyToKenAdminAuth,
+  adminController.revenueByDate
+);
+router.post(
+  "/admin/revenue/year",
+  middlewareAuth.verifyToKenAdminAuth,
+  adminController.revenueByYear
+);
 module.exports = router;
