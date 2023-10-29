@@ -117,4 +117,11 @@ router.post(
   middlewareAuth.verifyToKenAdminAuth,
   adminController.productedTotal
 );
+
+// seemore thong ke san pham
+router.post(
+  "/admin/productedtotal/dabanchitiet",
+  middlewareAuth.verifyToKenAdminAuth,
+  adminController.sanphamdabanchitiet
+);
 module.exports = router;

@@ -305,21 +305,24 @@ class adminController {
     if (products.length > 0) {
       for (let index = 0; index < products.length; index++) {
         const element = products[index];
-        const resgetproduct = await adminModel.sanphamdaban(element.id_product)
-        const resgetproductInfor = await productsModel.returnProductById(element.id_product)
-// console.log(resgetproductInfor)
-        if (resgetproduct.length>0 &&resgetproductInfor.length>0) {
+        const resgetproduct = await adminModel.sanphamdaban(element.id_product);
+        const resgetproductInfor = await productsModel.returnProductById(
+          element.id_product
+        );
+        // console.log(resgetproductInfor)
+        if (resgetproduct.length > 0 && resgetproductInfor.length > 0) {
           const entity = {
             ...element,
             quantity_product: resgetproduct[0].quantity_total,
-            name_product:resgetproductInfor[0].name_product
+            name_product: resgetproductInfor[0].name_product,
+            picture_product: resgetproductInfor[0].picture_product,
           };
           productDetail.push(entity);
         } else {
           const entity = {
             ...element,
             quantity_product: "Lỗi lấy số lượng",
-            name_product:""
+            name_product: "",
           };
           productDetail.push(entity);
         }
@@ -327,6 +330,19 @@ class adminController {
     }
 
     return res.send(productDetail);
+  }
+
+  //
+
+  async sanphamdabanchitiet(req, res) {
+    // console.log(req.body);
+    const products = await adminModel.sanphamdabanchitiet(
+      req.body.filter.startday,
+      req.body.filter.endday,
+      req.body.filter.id_product
+    );
+      console.log(products)
+    return res.send(products);
   }
 }
 

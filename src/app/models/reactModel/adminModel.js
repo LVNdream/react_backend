@@ -253,4 +253,14 @@ module.exports = {
     }
     return rowsOrder;
   },
+
+  sanphamdabanchitiet: async function (startday,endday,id_product) {
+    const rowsOrder = await db.load(
+      `select *, sum(quantity) as quantity_daban from order_detail where id_order in (select id_order from orders where status_order="Giao hàng thành công" and  date_order >= "${startday}" and id_order <= "${endday}") and id_product="${id_product}" group by id_product,color,size;`
+    );
+    if (rowsOrder.length === 0) {
+      return [];
+    }
+    return rowsOrder;
+  },
 };
