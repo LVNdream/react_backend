@@ -203,10 +203,7 @@ module.exports = {
     return rowsOrder;
   },
   // thống kê doanh thu theo ngày
-revenueByDate: async function (
-    startday,
-    endday
-  ) {
+  revenueByDate: async function (startday, endday) {
     const rowsOrder = await db.load(
       `select *, sum(total_money_order) as total_money from orders where status_order="Giao hàng thành công" and date_order >= "${startday}" and date_order <= "${endday}" group by date_order;`
     );
@@ -216,11 +213,40 @@ revenueByDate: async function (
     return rowsOrder;
   },
   // thống kê doanh thu theo tháng
-  revenueByYear: async function (
-    year
-  ) {
+  revenueByYear: async function (year) {
     const rowsOrder = await db.load(
-      `select month(date_order) as date_order,sum(total_money_order) as total_money from orders where status_order="Giao hàng thành công" and  year(date_order) = "2023" group by month(date_order) order by month(date_order);`
+      `select month(date_order) as date_order,sum(total_money_order) as total_money from orders where status_order="Giao hàng thành công" and  year(date_order) = "${year}" group by month(date_order) order by month(date_order);`
+    );
+    if (rowsOrder.length === 0) {
+      return [];
+    }
+    return rowsOrder;
+  },
+  // getAllOrderProductted bydate
+
+  getAllOrder_Success: async function (startday, endday) {
+    const rowsOrder = await db.load(
+      `select *from orders where status_order="Giao hàng thành công" and date_order >= "${startday}" and date_order <= "${endday}";`
+    );
+    if (rowsOrder.length === 0) {
+      return [];
+    }
+    return rowsOrder;
+  },
+  // thong ke san pham
+  productedTotalByDate: async function (startday, endday) {
+    const rowsOrder = await db.load(
+      `select *, sum(quantity) as quantity_daban from order_detail where id_order in (select id_order from orders where status_order="Giao hàng thành công" and  date_order >= "${startday}" and id_order <= "${endday}") group by id_product`
+    );
+    if (rowsOrder.length === 0) {
+      return [];
+    }
+    return rowsOrder;
+  },
+
+  sanphamdaban: async function (id_product) {
+    const rowsOrder = await db.load(
+      `select *,sum(quantity_product) as quantity_total from productdetail where id_product = ${id_product} group by id_product;`
     );
     if (rowsOrder.length === 0) {
       return [];

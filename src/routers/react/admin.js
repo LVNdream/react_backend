@@ -112,4 +112,9 @@ router.post(
   middlewareAuth.verifyToKenAdminAuth,
   adminController.revenueByYear
 );
+router.post(
+  "/admin/productedtotal/date",
+  middlewareAuth.verifyToKenAdminAuth,
+  adminController.productedTotal
+);
 module.exports = router;

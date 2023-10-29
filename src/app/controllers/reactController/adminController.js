@@ -1,3 +1,4 @@
+const e = require("express");
 const adminModel = require("../../models/reactModel/adminModel");
 const productsModel = require("../../models/reactModel/productsModel");
 class adminController {
@@ -195,7 +196,7 @@ class adminController {
   }
   // filter by date
   async getOrderFilterByDate(req, res) {
-    console.log(req.body);
+    // console.log(req.body);
     const allOrder = await adminModel.getOrderbyFilterDate(
       req.body.filter.startday,
       req.body.filter.endday
@@ -292,6 +293,40 @@ class adminController {
     const revenue = await adminModel.revenueByYear(req.filter.year);
 
     return res.send(revenue);
+  }
+
+  async productedTotal(req, res) {
+    const products = await adminModel.productedTotalByDate(
+      req.body.filter.startday,
+      req.body.filter.endday
+    );
+    // console.log(products)
+    const productDetail = [];
+    if (products.length > 0) {
+      for (let index = 0; index < products.length; index++) {
+        const element = products[index];
+        const resgetproduct = await adminModel.sanphamdaban(element.id_product)
+        const resgetproductInfor = await productsModel.returnProductById(element.id_product)
+// console.log(resgetproductInfor)
+        if (resgetproduct.length>0 &&resgetproductInfor.length>0) {
+          const entity = {
+            ...element,
+            quantity_product: resgetproduct[0].quantity_total,
+            name_product:resgetproductInfor[0].name_product
+          };
+          productDetail.push(entity);
+        } else {
+          const entity = {
+            ...element,
+            quantity_product: "Lỗi lấy số lượng",
+            name_product:""
+          };
+          productDetail.push(entity);
+        }
+      }
+    }
+
+    return res.send(productDetail);
   }
 }
 
