@@ -130,6 +130,8 @@ class productsController {
       if (arrayCmt.length > 0) {
         for (let index = 0; index < arrayCmt.length; index++) {
           commentDetail[index] = {
+            id_product: arrayCmt[index].id_product,
+            id_content: arrayCmt[index].id_content,
             id_user: arrayCmt[index].id_user,
             lastname_user: arrayCmt[index].lastname_user,
             firstname_user: arrayCmt[index].firstname_user,

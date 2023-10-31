@@ -49,6 +49,7 @@ class adminController {
     }
   }
 
+  // Cập nhật số lượng cho các sản phẩm
   async updateProductQuantity(req, res) {
     // console.log("da vao duoc controller");
     let isError;
@@ -75,11 +76,6 @@ class adminController {
     }
   }
 
-  //
-
-  //
-  //
-  //
   async updateProductInfor(req, res) {
     // console.log(req.body.inforProduct);
     let isError;
@@ -188,6 +184,7 @@ class adminController {
     const type_product = await adminModel.getTypeProduct();
     return res.send(type_product);
   }
+
   async getCaterogyProduct(req, res) {
     const caterogy_product = await adminModel.getCaterogyProduct(
       req.body.type_product
@@ -341,8 +338,23 @@ class adminController {
       req.body.filter.endday,
       req.body.filter.id_product
     );
-      console.log(products)
+    console.log(products);
     return res.send(products);
+  }
+
+  // hàm để khôi phục sản phẩm
+  async RestoreProduct(req, res) {
+    try {
+      console.log(req.body.entity.id_product_deleted);
+      const resultRestore = await adminModel.RestoreProduct(
+        req.body.entity.id_product_deleted
+      );
+
+      return res.send({ mess: "Ban da restore thanh cong", isError: false });
+    } catch (error) {
+      console.log(error);
+      return res.send({ mess: "Ban da restore that bai", isError: true });
+    }
   }
 }
 

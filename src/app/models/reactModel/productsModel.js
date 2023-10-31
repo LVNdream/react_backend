@@ -7,24 +7,34 @@ const TBL_productdeleted = "product_deleted";
 const TBL_COMMENTS = "comments";
 const TBL_COMMENTS_IMAGE = 'comments_image';
 module.exports = {
+
+  // 
+  // trả về các sản phẩm
   returnProduct: function () {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
     return db.load(`SELECT * from ${TBL_product}`);
   },
+// trả về sản phẩm theo Id
   returnProductById: function (id_product) {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
     return db.load(
       `SELECT * from ${TBL_product} where id_product = ${id_product}`
     );
   },
+
+// trả về  sản phẩm đã được xóa
   returnProductDeleted: function () {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
     return db.load(`SELECT * from ${TBL_productdeleted}`);
   },
+
+
   returnProductDesc: function () {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
     return db.load(`SELECT * from ${TBL_product} order by id_product desc`);
   },
+
+  // trả về sản phẩm theo danh mục
   returnProductByCaterogy: function (caterogy) {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
     return db.load(
@@ -38,13 +48,15 @@ module.exports = {
       `SELECT * from ${TBL_productdetail} where id_product=${id_product}`
     );
   },
+
+  // trả về danh sách các màu sắc
   returnProductListColor: function (id_product) {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
     return db.load(
       `SELECT DISTINCT color from ${TBL_productdetail} where id_product=${id_product}`
     );
   },
-
+// trả về danh sách các size
   returnProductListSize: function (id_product) {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
     return db.load(
@@ -59,11 +71,14 @@ module.exports = {
       `SELECT * from ${TBL_product} where id_product=${id_product} and caterogy_product="${caterogy}" and type_product="${type}"`
     );
   },
+  // hàm dùng để kiểm tra số lượng sản phẩm
   returnItemToCheckQuantity: function (id_product, color, size) {
     return db.load(
       `SELECT * from ${TBL_productdetail} where id_product=${id_product} and color="${color}" and id_size="${size}"`
     );
   },
+
+  // hàm dùng để cập nhật sản phẩm sau khi mua hàng
   updateQuanlityProduct: async function (entity) {
     const condition = {
       id_product: entity.id_product,
@@ -78,12 +93,14 @@ module.exports = {
     return db.updateQuantity(TBL_productdetail, entity, condition);
   },
 
+  // hàm trả về cmt
   returnCmt_By_Id_product: function (id_product) {
     return db.load(
       `SELECT * from ${TBL_COMMENTS} where id_product='${id_product}'`
     );
   },
 
+  // ham để trả về hình ảnh của cmt
   returnIMG_By_Id_content: function (id_content) {
     return db.load(
       `SELECT * from ${TBL_COMMENTS_IMAGE} where id_content = '${id_content}'`

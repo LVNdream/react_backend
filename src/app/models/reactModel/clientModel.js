@@ -27,14 +27,31 @@ module.exports = {
     return db.deleteOrder(TBL_ORDER, email, id_order);
   },
 
-  //
+  //////////////
+  // hàm thêm commnets
   addComment: async function (entity) {
     return db.add(TBL_COMMENTS, entity);
   },
+
+  // hàm thêm comment hình ảnh
   addComment_Picture: async function (entity) {
     return db.add(TBL_COMMENT_IMAGE, entity);
   },
+
+  // trả về tất cả các comment theo iduser
   returnAllCmtById_user: async function (id_user) {
-    return db.load(`SELECT * from ${TBL_COMMENTS} where id_user='${id_user}'`);;
+    return db.load(`SELECT * from ${TBL_COMMENTS} where id_user='${id_user}'`);
+  },
+  // cap nhat comment
+  updateComments: async function (entity) {
+    const condition = {
+      id_product: entity.id_product,
+      id_user: entity.id_user,
+      id_content: entity.id_content,
+    };
+    delete entity.id_product;
+    delete entity.id_user;
+    delete entity.id_content;
+    return db.updateComments(TBL_COMMENTS, entity, condition);
   },
 };

@@ -151,5 +151,31 @@ module.exports = {
       });
     });
   },
+
+  // restore product
+  restoreProduct: function (table, id_product_deleted) {
+    const sql = `delete from ${table} where id_product_deleted = ${id_product_deleted}`;
+    return new Promise(function (resolve, reject) {
+      pool.query(sql, function (error, results) {
+        if (error) {
+          return reject(error);
+        }
+        resolve(results);
+      });
+    });
+  },
+
+  // ham de updateComment
+  updateComments: function (table, entity, condition) {
+    const sql = `update ${table} set ? where id_content="${condition.id_content}" and id_user="${condition.id_user}" and id_product="${condition.id_product}" `;
+    return new Promise(function (resolve, reject) {
+      pool.query(sql, [entity, condition], function (error, results) {
+        if (error) {
+          return reject(error);
+        }
+        resolve(results);
+      });
+    });
+  },
 };
 // //////////////////

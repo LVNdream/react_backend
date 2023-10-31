@@ -181,6 +181,18 @@ class clientController {
       return res.send("Add comment error");
     }
   }
+
+  // ham de cap nhat thong tin commnet
+  async updateComments(req, res) {
+    console.log(req.body.entity);
+    try {
+      const kq = await clientModel.updateComments(req.body.entity);
+      return res.send({ mess: "Success Update", isError: false });
+    } catch (error) {
+      console.log(error);
+      return res.send({ mess: "Error Update", isError: true });
+    }
+  }
 }
 
 module.exports = new clientController();
