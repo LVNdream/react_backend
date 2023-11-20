@@ -5,16 +5,15 @@ const TBL_productdetail = "productdetail";
 const TBL_productdeleted = "product_deleted";
 
 const TBL_COMMENTS = "comments";
-const TBL_COMMENTS_IMAGE = 'comments_image';
+const TBL_COMMENTS_IMAGE = "comments_image";
 module.exports = {
-
-  // 
+  //
   // trả về các sản phẩm
   returnProduct: function () {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
     return db.load(`SELECT * from ${TBL_product}`);
   },
-// trả về sản phẩm theo Id
+  // trả về sản phẩm theo Id
   returnProductById: function (id_product) {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
     return db.load(
@@ -22,12 +21,11 @@ module.exports = {
     );
   },
 
-// trả về  sản phẩm đã được xóa
+  // trả về  sản phẩm đã được xóa
   returnProductDeleted: function () {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
     return db.load(`SELECT * from ${TBL_productdeleted}`);
   },
-
 
   returnProductDesc: function () {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
@@ -56,11 +54,11 @@ module.exports = {
       `SELECT DISTINCT color from ${TBL_productdetail} where id_product=${id_product}`
     );
   },
-// trả về danh sách các size
+  // trả về danh sách các size
   returnProductListSize: function (id_product) {
     // console.log("asdsa", db.load(`SELECT * from ${TBL_product}`));
     return db.load(
-      `SELECT DISTINCT id_size from ${TBL_productdetail} where id_product=${id_product}`
+      `SELECT DISTINCT id_size from ${TBL_productdetail} where id_product=${id_product} order by id_size asc`
     );
   },
 

@@ -45,4 +45,10 @@ router.post(
   middlewareAuth.verifyToken,
   clientController.updateComments
 );
+
+router.post(
+  "/deletecomments",
+  middlewareAuth.verifyToken,
+  clientController.deleteComments
+);
 module.exports = router;

@@ -177,5 +177,31 @@ module.exports = {
       });
     });
   },
+
+  // hàm để xóa comment
+  deleteComments: function (table, id_user, id_product, id_content) {
+    const sql = `delete from ${table} where id_user =${id_user} and id_product = ${id_product} and id_content = ${id_content}`;
+    return new Promise(function (resolve, reject) {
+      pool.query(sql, function (error, results) {
+        if (error) {
+          return reject(error);
+        }
+        resolve(results);
+      });
+    });
+  },
+
+  // hàm để xóa hình của các comments
+  deleteImgComments: function (table, id_content) {
+    const sql = `delete from ${table} where id_content = ${id_content}`;
+    return new Promise(function (resolve, reject) {
+      pool.query(sql, function (error, results) {
+        if (error) {
+          return reject(error);
+        }
+        resolve(results);
+      });
+    });
+  },
 };
 // //////////////////

@@ -29,7 +29,10 @@ class productsController {
       const product = productFilter[i];
       if (id_user) {
         listFavoriteProduct.forEach((element, index) => {
-          if (product.id_product == element.id_product && id_user==element.id_user) {
+          if (
+            product.id_product == element.id_product &&
+            id_user == element.id_user
+          ) {
             isFavorite = true;
           }
         });
@@ -91,6 +94,8 @@ class productsController {
 
   async getProductsDetail(req, res) {
     // console.log(req.params);
+    const id_user = req.params.iduser 
+    const id_product = req.params.id
 
     let inforDetail;
     const row = await productsModel.returnItemDetail(
@@ -99,7 +104,17 @@ class productsController {
       req.params.type
     );
     let isFavorite = false;
-    // const listFavoriteProduct = await clientModel.returnAllFavorite();
+    const listFavoriteProduct = await clientModel.returnAllFavorite();
+    if (id_user) {
+      listFavoriteProduct.forEach((element, index) => {
+        if (
+          id_product == element.id_product &&
+          id_user == element.id_user
+        ) {
+          isFavorite = true;
+        }
+      });
+    }
 
     let itemDeleted = false;
 

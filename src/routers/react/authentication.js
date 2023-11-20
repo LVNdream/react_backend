@@ -13,6 +13,10 @@ router.post('/refreshtoken',authController.requestRefreshToken);
 router.post('/logout',middlewareAuth.verifyToken,authController.logOut);
 router.get('/test',middlewareAuth.verifyToken,authController.test);
 
+// 
+router.post('/authction/app',authController.loginApp);
+
+
 
 
 

@@ -61,6 +61,7 @@ class authController {
   //   hàm để login User
 
   async loginUser(req, res) {
+    console.log(req.body);
     const generateAccessToken = (user_temp) => {
       return jwt.sign(
         {
@@ -200,7 +201,7 @@ class authController {
           jwt.verify(
             refreshTokenOnCookie,
             process.env.JWT_REFRESHTOKEN_KEY,
-            
+
             async (error, user) => {
               if (error) {
                 console.log(error);
@@ -255,6 +256,40 @@ class authController {
 
   test(req, res) {
     res.send("21313123");
+  }
+
+  async loginApp(req, res) {
+    console.log(req.body);
+    try {
+      const user = await authModel.getAccountByEmail(req.body.email);
+      let isSuccess = false;
+      if (!user) {
+        isSuccess = false;
+        return res.send("không tìm thấy tài khoản");
+      } else {
+        const validPassword = await bcrypt.compareSync(
+          req.body.password,
+          user.password_user
+        );
+        if (!validPassword) {
+          isSuccess = false;
+          return res.send("Bạn đã nhập sai mật khẩu");
+        } else {
+          // console.log(process.env.JWT_ACCESS_KEY);
+          const user_temp = user;
+          await delete user_temp.password_user;
+          await delete user_temp.refreshtoken;
+
+          isSuccess = true;
+          const client = { token: "18082022levietthai", email:user_temp.email_user };
+          // console.log(client)
+          return res.send(client);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
   }
 }
 

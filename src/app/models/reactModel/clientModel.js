@@ -54,4 +54,14 @@ module.exports = {
     delete entity.id_content;
     return db.updateComments(TBL_COMMENTS, entity, condition);
   },
+
+  // hàm để xóa comment trên bình luận sản phẩm
+
+  deleteComments: async function (id_user, id_product, id_content) {
+    return db.deleteComments(TBL_COMMENTS, id_user, id_product, id_content);
+  },
+  // hàm để xóa hình comments
+  deleteImgComments: async function (id_content) {
+    return db.deleteImgComments(TBL_COMMENT_IMAGE, id_content);
+  },
 };

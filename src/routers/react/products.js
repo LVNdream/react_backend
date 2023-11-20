@@ -11,7 +11,7 @@ router.get('/men',productsController.getProducts);
 router.get('/men/:caterogy',productsController.getProductsByCaterogy);
 
 // trả về chi tiết của một sản phẩm
-router.get('/:type/:caterogy/:id',productsController.getProductsDetail);
+router.get('/:type/:caterogy/:id/:iduser',productsController.getProductsDetail);
 
 
 

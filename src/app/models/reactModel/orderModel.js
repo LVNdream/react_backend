@@ -3,13 +3,11 @@ const TBL_ORDERS = "orders";
 const TBL_CTHD = "order_detail ";
 const TBL_PRODUCT = "products";
 
-
 module.exports = {
-
   // trả về hóa đơn theo Email
   orderByEmail: async function (email) {
     const rowOrder = await db.load(
-      `select * from ${TBL_ORDERS} where email = '${email}' order by date_order desc`
+      `select * from ${TBL_ORDERS} where email = '${email}' order by id_order desc`
     );
     if (rowOrder.length === 0) {
       return null;
@@ -17,7 +15,7 @@ module.exports = {
     return rowOrder;
   },
 
-// trả về các hóa đơn thành công theo email người dùng
+  // trả về các hóa đơn thành công theo email người dùng
   orderSuccessByEmail: async function (email) {
     const rowOrder = await db.load(
       `select * from ${TBL_ORDERS} where email = '${email}' and status_order="Giao hàng thành công" order by date_order desc`
@@ -76,14 +74,11 @@ module.exports = {
   //     return db.add(TBL_PRODUCT, entity);
   // },
   //hàm hóa đơn của khách hàng
-  
-  // 
- 
+
+  //
 
   // hàm để hủy hóa đơn
   deleteHD: function (entity) {
     return db.delete(TBL_ORDERS, entity);
   },
-
-  
 };

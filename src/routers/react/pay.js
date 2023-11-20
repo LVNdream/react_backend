@@ -6,6 +6,10 @@ const payController = require("../../app/controllers//reactController/payControl
 
 // thêm hóa đơn
 router.post('/addorder',payController.addOrder);
+router.post('/createurlvnpay',payController.createURLVNPay);
+router.get  ('/test',payController.test);
+
+
 
 
 

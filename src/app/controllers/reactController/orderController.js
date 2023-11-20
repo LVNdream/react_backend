@@ -25,7 +25,9 @@ class orderController {
           total_money_order: orders[i].total_money_order,
           phone:orders[i].phone
         };
+        console.log({listItem: await orderModel.selectOrder_detail(orders[i].id_order)})
       }
+      console.log(allOrder)
     } else {
       issetHD = false;
     }
