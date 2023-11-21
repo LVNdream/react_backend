@@ -166,4 +166,9 @@ router.post(
   middlewareAuth.verifyToKenAdminAuth,
   adminController.sanphamdabanchitiet
 );
+router.post(
+  "/admin/filtertoupdate",
+  middlewareAuth.verifyToKenAdminAuth,
+  adminController.filterOrderToUpdate
+);
 module.exports = router;

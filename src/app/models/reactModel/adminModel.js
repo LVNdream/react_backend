@@ -22,7 +22,7 @@ module.exports = {
   // trả về tất cả các hóa đơn
   allOrder: async function () {
     const rowOrder = await db.load(
-      `select * from ${TBL_ORDERS} order by date_order desc`
+      `select * from ${TBL_ORDERS} order by id_order desc`
     );
     if (rowOrder.length === 0) {
       return null;
@@ -111,7 +111,7 @@ module.exports = {
 
   // Restore sản phẩm
   RestoreProduct: function (id_product_deleted) {
-    return db.restoreProduct(TBL_PRODUCT_DELETED,id_product_deleted);
+    return db.restoreProduct(TBL_PRODUCT_DELETED, id_product_deleted);
   },
 
   // thêm chi tiết sản phẩm
@@ -289,5 +289,38 @@ module.exports = {
       return [];
     }
     return rowsOrder;
+  },
+
+  // ow day xu li trong trang cap nhat hoa don
+  // ham tra ve hoa don theo ngay va trang thai
+  orderByDateAndType: async function (date_order,status_order) {
+    const rowOrder = await db.load(
+      `select * from ${TBL_ORDERS} where date_order = '${date_order}' and status_order='${status_order}' order by id_order desc`
+    );
+    if (rowOrder.length === 0) {
+      return null;
+    }
+    return rowOrder;
+  },
+  // ham tra ve hoa don theo ngay
+  orderByDate: async function (date_order) {
+    console.log(date_order)
+    const rowOrder = await db.load(
+      `select * from ${TBL_ORDERS} where date_order = '${date_order}' order by id_order desc`
+    );
+    // console.log(rowOrder)
+    if (rowOrder.length === 0) {
+      return null;
+    }
+    return rowOrder;
+  },
+  orderByType: async function (status_order) {
+    const rowOrder = await db.load(
+      `select * from ${TBL_ORDERS} where status_order = '${status_order}' order by id_order desc`
+    );
+    if (rowOrder.length === 0) {
+      return null;
+    }
+    return rowOrder;
   },
 };

@@ -356,6 +356,39 @@ class adminController {
       return res.send({ mess: "Ban da restore that bai", isError: true });
     }
   }
+
+  // ham filter san pham de cap nhat hoa don
+
+  async filterOrderToUpdate(req, res) {
+    try {
+      const dataSearch = req.body.dataSearch;
+      let allOrder = [];
+      console.log(dataSearch);
+      if (dataSearch.date_order && dataSearch.status_order) {
+        console.log("loc theo ngay va loai hoa don");
+        allOrder = await adminModel.orderByDateAndType(
+          dataSearch.date_order.toString(),
+          dataSearch.status_order
+        );
+      } else if (dataSearch.date_order && !dataSearch.status_order) {
+        console.log("loc theo ngay");
+
+        allOrder = await adminModel.orderByDate(
+          dataSearch.date_order.toString()
+        );
+      } else if (!dataSearch.date_order && dataSearch.status_order) {
+        console.log("loc theo loai hoa don");
+        allOrder = await adminModel.orderByType(dataSearch.status_order);
+      } else {
+        console.log("tat ca hoa don");
+        allOrder = await adminModel.allOrder();
+      }
+      return res.send({ allOrder, issetHD: true });
+    } catch (error) {
+      console.log(error);
+      return res.send({ mess: "filter faild", isError: true });
+    }
+  }
 }
 
 module.exports = new adminController();
