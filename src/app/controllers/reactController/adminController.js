@@ -287,7 +287,7 @@ class adminController {
   // thống kê doanh thu theo năm
   async revenueByYear(req, res) {
     // console.log(req.body);
-    const revenue = await adminModel.revenueByYear(req.filter.year);
+    const revenue = await adminModel.revenueByYear(req.body.filter.year);
 
     return res.send(revenue);
   }

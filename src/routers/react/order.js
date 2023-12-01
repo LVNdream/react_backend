@@ -11,6 +11,8 @@ router.post('/clientgetordersuccess',middlewareAuth.verifyToken,orderController.
 
 // trả về đơn hàng theo email khách hàng
 router.post('/clientgetorder',middlewareAuth.verifyToken,orderController.clientGetOrder);
+router.get('/clientgetorder',orderController.clientGetOrderAppMobile);
+
 
 
 
